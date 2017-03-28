@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>UFC Data Analytics</title>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <script>
+    $(document).ready(function() {
+        if (false) {
+            $(document.getElementById("account").children).toggle();
+        }
+    });
+    </script>
+</head>
+<body>
+    <!--Navbar-->
+    <nav class="navbar navbar-fixed-top navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">
+                    UFC Data Analytics
+                </a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="index.html">Home</a></li>
+                <li><a href="#">Search</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" id="account">
+                <li><a href="#">Login</a></li>
+                <li><a href="#">Sign Up</a></li>
+                <li style="display: none;"><a href="live-fight.html">Live Fight</a></li>
+                <li style="display: none;"><a href="#">Dashboard</a></li>
+                <li style="display: none;"><a href="#">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!---->
+    <div style="background:url('images/ring.jpg') no-repeat;background-size:cover;">
+        <div class="container-fluid">
+            <div style="display:table;height:700px;width:50%;float:left;">
+                <div style="display:table-cell;vertical-align:middle;">
+                    <p style="width:60%;margin-left:20%;background-color:white;text-align:left;padding:5px 12px 5px 12px;border-radius:20px;font-size:21px;">Get all stats and social predictions for UFC.</p>
+                    <p style="width:60%;margin-left:20%;background-color:white;text-align:left;padding:5px 12px 5px 12px;border-radius:20px;font-size:21px;">"10/10" - IGN</p>
+                </div>
+                <!--
+                <svg height="64" width="144">
+                    <a href="#">
+                        <ellipse cx="72" cy="32" rx="70" ry="30" style="fill:red;stroke:black;stroke-width:4" />
+                        <text x="72" y="32" fill="white" text-anchor="middle" dominant-baseline="central" font-weight="bold" font-style="italic">UFC Analytics</text>
+                    </a>
+                    Sorry, your browser does not support inline SVG.
+                </svg>
+            -->
+            </div>
+            <div style="heigth:700px;width:45%;margin-left:50%;">
+                <img src="images/Conor-McGregor.png" align="right" style="height:auto;width:467px;float:right;">
+            </div>
+        </div>
+    </div>
+    <div style="height:820px;">
+        <div class="jumbotron">
+            <p>Access any statistics on UFC</p>
+            <div class="container">
+                <div class="col-xs-3" style="box-shadow:1px 1px 2px #aaa, -1px -1px 2px #aaa, 1px -1px 2px #aaa, -1px 1px 2px #aaa;">
+                    <p>View Stats</p>
+                    <svg width="300px" height="150px">
+
+                    </svg>
+                </div>
+                <div class="col-xs-3" style="box-shadow:1px 1px 2px #aaa, -1px -1px 2px #aaa, 1px -1px 2px #aaa, -1px 1px 2px #aaa;">
+                    <p>Analyze</p>
+                    <div>
+                        <div style="width:35%;float:left;width:100px;">
+                            <img src="http://imagec.ufc.com/http%253A%252F%252Fmedia.ufc.tv%252F%252Ffighter_images%252FDaniel_Cormier%252FCORMIER_DANIEL.png?mw300-mh300" style="width:100px;height:150px;object-fit:cover;">
+                        </div>
+                        <div style="width:35%;float:right;width:100px;">
+                            <img src="http://imagec.ufc.com/http%253A%252F%252Fmedia.ufc.tv%252F%252Ffighter_images%252FAnthony_Johnson%252FJOHNSON_ANTHONY.png?mw300-mh300" style="width:100px;height:150px;object-fit:cover;">
+                        </div>
+                        <div style="margin-left:35%;margin-right:35%;padding:0;margin-top:0;margin-bottom:0;display:table;">
+                            <p style="font-size:14px;display:table-cell;vertical-align:middle;">CORMIER VS JOHNSON</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-3" style="box-shadow:1px 1px 2px #aaa, -1px -1px 2px #aaa, 1px -1px 2px #aaa, -1px 1px 2px #aaa;">
+                    <p>Predict</p>
+                    <svg width="300px" height="150px">
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

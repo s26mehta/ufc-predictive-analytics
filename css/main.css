@@ -1,0 +1,11 @@
+body {
+    padding-top: 50px;
+}
+
+svg a:hover {
+    text-decoration: none;
+}
+
+p {
+    text-align: center;
+}
