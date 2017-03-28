@@ -8,9 +8,49 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-
     <script>
     $(document).ready(function() {
+        let f1Percent = 40, f2Percent = 100-f1Percent;
+
+        const height = 400;
+        const barGraph = d3.select("#bar-graph")
+            .append("svg")
+            .attr("width", "70%")
+            .attr("height", height);
+
+        barGraph.append("line")
+            .attr("x1", "0")
+            .attr("x2", "100%")
+            .attr("y1", "100%")
+            .attr("y2", "100%")
+            .style("stroke", "#000");
+
+        barGraph.append("rect")
+            .attr("x", "20%")
+            .attr("y", f2Percent+"%")
+            .attr("width", "20%")
+            .attr("height", f1Percent+"%");
+        barGraph.append("text")
+            .attr("x", "30%")
+            .attr("y", f2Percent+f1Percent/2+"%")
+            .text(f1Percent+"%")
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "central")
+            .attr("fill", "#fff");
+
+        barGraph.append("rect")
+            .attr("x", "60%")
+            .attr("y", f1Percent+"%")
+            .attr("width", "20%")
+            .attr("height", f2Percent+"%");
+        barGraph.append("text")
+            .attr("x", "70%")
+            .attr("y", f1Percent+f2Percent/2+"%")
+            .text(f2Percent+"%")
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "central")
+            .attr("fill", "#fff");
+
         if (false) {
             $(document.getElementById("account").children).toggle();
 
@@ -19,6 +59,79 @@
     </script>
 </head>
 <body>
+    <!--Sign Up modal-->
+    <div class="modal fade" id="signup" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Sign Up</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputFirstName" class="col-sm-3 control-label">First Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputLastName" class="col-sm-3 control-label">Last Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newUsername" class="col-sm-3 control-label">Username</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="newUsername" placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword" class="col-sm-3 control-label">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" id="newPassword" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-sm-3 control-label">Email</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control" id="email" placeholder="Email">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Login modal-->
+    <div class="modal fade" id="login" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Login</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="username-email" class="col-sm-3 control-label">Username/Email</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="username-email" placeholder="Username/Email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-sm-3 control-label">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" id="password" placeholder="Password">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Navbar-->
     <nav class="navbar navbar-fixed-top navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -27,17 +140,45 @@
                 </a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#">Search</a></li>
+                <li class="active"><a href="index.html">Home</a></li>
+                <li>
+                    <a href="#">Search</a>
+                </li>
             </ul>
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Go</button>
+            </form>
             <ul class="nav navbar-nav navbar-right" id="account">
-                <li><a href="#">Login</a></li>
-                <li><a href="#">Sign Up</a></li>
-                <li class="active" style="display: none;"><a href="#">Live Fight</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#signup">Sign Up</a></li>
+                <li style="display: none;"><a href="live-fight.html">Live Fight</a></li>
                 <li style="display: none;"><a href="#">Dashboard</a></li>
                 <li style="display: none;"><a href="#">Logout</a></li>
             </ul>
         </div>
     </nav>
+    <div class="container-fluid" style="width:100%;">
+        <p>Live Fight</p>
+        <div style="height:400px;">
+            <div style="float:left;width:15%;height:100%;">
+                <div id="fighter-1" style="height:95%">
+                    <img src="http://imagec.ufc.com/http%253A%252F%252Fmedia.ufc.tv%252F%252Ffighter_images%252FDaniel_Cormier%252FCORMIER_DANIEL.png?mw300-mh300" style="width:100%;height:100%;object-fit:cover;">
+                </div>
+                <p>CORMIER</p>
+            </div>
+            <div style="height:100%;width:15%;float:right;">
+                <div id="fighter-2" style="height:95%">
+                    <img src="http://imagec.ufc.com/http%253A%252F%252Fmedia.ufc.tv%252F%252Ffighter_images%252FAnthony_Johnson%252FJOHNSON_ANTHONY.png?mw300-mh300" style="width:100%;height:100%;object-fit:cover;">
+                </div>
+                <p>JOHNSON</p>
+            </div>
+            <div style="display:table;padding:2% 0 2% 0">
+                <div id="bar-graph" style="margin-left:15%;margin-right:15%;display:table-cell;text-align:center;"></div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

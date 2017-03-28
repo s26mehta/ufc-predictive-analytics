@@ -11,13 +11,86 @@
 
     <script>
     $(document).ready(function() {
-        if (false) {
+        if (true) {
             $(document.getElementById("account").children).toggle();
         }
     });
+
     </script>
 </head>
 <body>
+    <!--Sign Up modal-->
+    <div class="modal fade" id="signup" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Sign Up</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputFirstName" class="col-sm-3 control-label">First Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputLastName" class="col-sm-3 control-label">Last Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newUsername" class="col-sm-3 control-label">Username</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="newUsername" placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword" class="col-sm-3 control-label">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" id="newPassword" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-sm-3 control-label">Email</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control" id="email" placeholder="Email">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Login modal-->
+    <div class="modal fade" id="login" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Login</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="username-email" class="col-sm-3 control-label">Username/Email</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="username-email" placeholder="Username/Email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-sm-3 control-label">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" id="password" placeholder="Password">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <!--Navbar-->
     <nav class="navbar navbar-fixed-top navbar-inverse">
         <div class="container-fluid">
@@ -28,18 +101,26 @@
             </div>
             <ul class="nav navbar-nav">
                 <li class="active"><a href="index.html">Home</a></li>
-                <li><a href="#">Search</a></li>
+                <li>
+                    <a href="#">Search</a>
+                </li>
             </ul>
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Go</button>
+            </form>
             <ul class="nav navbar-nav navbar-right" id="account">
-                <li><a href="#">Login</a></li>
-                <li><a href="#">Sign Up</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#signup">Sign Up</a></li>
                 <li style="display: none;"><a href="live-fight.html">Live Fight</a></li>
-                <li style="display: none;"><a href="#">Dashboard</a></li>
+                <li style="display: none;"><a href="dashboard.html">Dashboard</a></li>
                 <li style="display: none;"><a href="#">Logout</a></li>
             </ul>
         </div>
     </nav>
-    <!---->
+    <!--Landing page-->
     <div style="background:url('images/ring.jpg') no-repeat;background-size:cover;">
         <div class="container-fluid">
             <div style="display:table;height:700px;width:50%;float:left;">
@@ -62,36 +143,49 @@
             </div>
         </div>
     </div>
-    <div style="height:820px;">
-        <div class="jumbotron">
+    <!--Previews-->
+    <div>
+        <div class="jumbotron" style="margin-bottom:0;">
             <p>Access any statistics on UFC</p>
-            <div class="container">
-                <div class="col-xs-3" style="box-shadow:1px 1px 2px #aaa, -1px -1px 2px #aaa, 1px -1px 2px #aaa, -1px 1px 2px #aaa;">
+            <div class="container-fluid">
+                <div class="col-sm-4 col-md-3 preview" style="box-shadow:1px 1px 2px #aaa, -1px -1px 2px #aaa, 1px -1px 2px #aaa, -1px 1px 2px #aaa;">
                     <p>View Stats</p>
-                    <svg width="300px" height="150px">
-
-                    </svg>
+                    <div style="width:35%;float:left;">
+                        <img src="http://imagec.ufc.com/http%253A%252F%252Fmedia.ufc.tv%252F%252Ffighter_images%252FGermaine_de_Randadamie%252FGERMAINE_DE_RANDAMIE_CHAMP.png?mw300-mh300" style="width:100px;height:150px;object-fit:cover;">
+                    </div>
+                    <ul style="margin-left:35%;">
+                        <li>Germaine de Randamie</li>
+                        <li>7 Wins</li>
+                        <li>3 Losses</li>
+                        <li>0 Draws</li>
+                    </ul>
                 </div>
-                <div class="col-xs-3" style="box-shadow:1px 1px 2px #aaa, -1px -1px 2px #aaa, 1px -1px 2px #aaa, -1px 1px 2px #aaa;">
+                <div class="col-sm-4 col-md-3 preview" style="box-shadow:1px 1px 2px #aaa, -1px -1px 2px #aaa, 1px -1px 2px #aaa, -1px 1px 2px #aaa;">
                     <p>Analyze</p>
                     <div>
-                        <div style="width:35%;float:left;width:100px;">
+                        <div style="float:left;width:100px;">
                             <img src="http://imagec.ufc.com/http%253A%252F%252Fmedia.ufc.tv%252F%252Ffighter_images%252FDaniel_Cormier%252FCORMIER_DANIEL.png?mw300-mh300" style="width:100px;height:150px;object-fit:cover;">
                         </div>
-                        <div style="width:35%;float:right;width:100px;">
+                        <div style="float:right;width:100px;">
                             <img src="http://imagec.ufc.com/http%253A%252F%252Fmedia.ufc.tv%252F%252Ffighter_images%252FAnthony_Johnson%252FJOHNSON_ANTHONY.png?mw300-mh300" style="width:100px;height:150px;object-fit:cover;">
                         </div>
-                        <div style="margin-left:35%;margin-right:35%;padding:0;margin-top:0;margin-bottom:0;display:table;">
+                        <div style="margin-left:35%;margin-right:35%;padding:0;margin-top:0;margin-bottom:0;display:table;height:150px;">
                             <p style="font-size:14px;display:table-cell;vertical-align:middle;">CORMIER VS JOHNSON</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-3" style="box-shadow:1px 1px 2px #aaa, -1px -1px 2px #aaa, 1px -1px 2px #aaa, -1px 1px 2px #aaa;">
+                <div class="col-sm-4 col-md-3 preview" style="box-shadow:1px 1px 2px #aaa, -1px -1px 2px #aaa, 1px -1px 2px #aaa, -1px 1px 2px #aaa;">
                     <p>Predict</p>
                     <svg width="300px" height="150px">
                     </svg>
                 </div>
             </div>
+        </div>
+    </div>
+    <!--Contact-->
+    <div>
+        <div class="container-fluid">
+            <p>Contact</p>
         </div>
     </div>
 </body>

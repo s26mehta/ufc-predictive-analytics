@@ -9,3 +9,23 @@ svg a:hover {
 p {
     text-align: center;
 }
+
+.preview {
+    padding-bottom: 15px;
+}
+
+@media (min-width: 768px) {
+    .col-sm-4 {
+        margin-left: 0;
+        margin-right: 5%;
+    }
+}
+@media (min-width: 992px) {
+    .col-md-3 {
+        margin-left: 5%;
+        margin-right: 0;
+    }
+    .col-md-3:first-of-type {
+        margin-left: 7.5%;
+    }
+}

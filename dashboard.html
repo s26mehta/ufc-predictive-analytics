@@ -18,6 +18,79 @@
     </script>
 </head>
 <body>
+    <!--Sign Up modal-->
+    <div class="modal fade" id="signup" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Sign Up</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputFirstName" class="col-sm-3 control-label">First Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputLastName" class="col-sm-3 control-label">Last Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newUsername" class="col-sm-3 control-label">Username</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="newUsername" placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword" class="col-sm-3 control-label">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" id="newPassword" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-sm-3 control-label">Email</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control" id="email" placeholder="Email">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Login modal-->
+    <div class="modal fade" id="login" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Login</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="username-email" class="col-sm-3 control-label">Username/Email</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="username-email" placeholder="Username/Email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-sm-3 control-label">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" id="password" placeholder="Password">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Navbar-->
     <nav class="navbar navbar-fixed-top navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -26,17 +99,58 @@
                 </a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#">Search</a></li>
+                <li class="active"><a href="index.html">Home</a></li>
+                <li>
+                    <a href="#">Search</a>
+                </li>
             </ul>
+            <form class="navbar-form navbar-left">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Go</button>
+            </form>
             <ul class="nav navbar-nav navbar-right" id="account">
-                <li><a href="#">Login</a></li>
-                <li><a href="#">Sign Up</a></li>
-                <li class="active" style="display: none;"><a href="#">Live Fight</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#signup">Sign Up</a></li>
+                <li style="display: none;"><a href="live-fight.html">Live Fight</a></li>
                 <li style="display: none;"><a href="#">Dashboard</a></li>
                 <li style="display: none;"><a href="#">Logout</a></li>
             </ul>
         </div>
     </nav>
+    <div class="container-fluid">
+        <p>Dashboard</p>
+        <div id="graph">
+        </div>
+        <script>
+        let fightersFollowed = [];
+        const length = fightersFollowed.length;
+
+        const height = 500;
+        const graph = d3.select("#graph")
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", height);
+
+        graph.append("line")
+            .attr("x1", 50)
+            .attr("x2", "100%")
+            .attr("y1", height-50)
+            .attr("y2", height-50)
+            .style("stroke", "#000");
+        graph.append("line")
+            .attr("x1", 50)
+            .attr("x2", 50)
+            .attr("y1", 0)
+            .attr("y2", height-50)
+            .style("stroke", "#000");
+        
+        for (let index = 0; index < length; index++) {
+
+        }
+        </script>
+
+    </div>
 </body>
 </html>
