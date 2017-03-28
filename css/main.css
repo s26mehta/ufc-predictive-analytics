@@ -14,6 +14,33 @@ p {
     padding-bottom: 15px;
 }
 
+polyline {
+    stroke-width: 2px;
+    fill: none;
+}
+
+div.thumbnail {
+    width: 200px;
+    height: 300px;
+    margin: 10px;
+    padding: 10px;
+    border-color: #777777;
+    border-width: 3px;
+    border-style: solid;
+    float: left;
+}
+div#add-fighter {
+    border-style: dashed;
+    display: table;
+}
+div#add-fighter .glyphicon {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 87px;
+    color: #777777;
+}
+
 @media (min-width: 768px) {
     .col-sm-4 {
         margin-left: 0;

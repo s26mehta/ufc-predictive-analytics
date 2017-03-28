@@ -114,43 +114,177 @@
                 <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
                 <li><a href="#" data-toggle="modal" data-target="#signup">Sign Up</a></li>
                 <li style="display: none;"><a href="live-fight.html">Live Fight</a></li>
-                <li style="display: none;"><a href="#">Dashboard</a></li>
+                <li class="active" style="display: none;"><a href="dashboard.html">Dashboard</a></li>
                 <li style="display: none;"><a href="#">Logout</a></li>
             </ul>
         </div>
     </nav>
     <div class="container-fluid">
         <p>Dashboard</p>
-        <div id="graph">
-        </div>
-        <script>
-        let fightersFollowed = [];
-        const length = fightersFollowed.length;
+        <div id="graph" style="width:100%;height:500px;"></div>
+        <div id="fighters-followed"></div>
+    </div>
 
-        const height = 500;
+    <script>
+    const waitForFinalEvent = (()=>{
+        let timers = {};
+        return function (callback, ms, uniqueId) {
+            if (timers[uniqueId]) {
+                clearTimeout(timers[uniqueId]);
+            }
+            timers[uniqueId] = setTimeout(callback, ms);
+        };
+    })();
+    class Fighter {
+        constructor(name, colour, values) {
+            this.name = name;
+            if (colour) {
+                this.colour = colour;
+            }
+            else {
+                this.colour = randomColour();
+            }
+            this.values = values;
+        }
+        numberOfValues() {
+            return this.values.length;
+        }
+        maxValue(length) {
+            return sortDescending(this.values)[0];
+        }
+    }
+    window.addEventListener("resize", ()=> {
+    	waitForFinalEvent(this.rePlot(), 200, "");
+    });
+
+    let fightersFollowed = [];
+    const numberOfPoints = 5;
+
+    function plot() {
+        d3.selectAll("#graph svg").remove();
+
+        let computedDiv = window.getComputedStyle(document.getElementById("graph"), null);
+        let divWidth = parseInt(computedDiv.width);
+        let divHeight = parseInt(computedDiv.height);
+        // console.log(divWidth);
+
+        const length = 4;
+
+        const padding = 25;
+        const height = divHeight-padding;
+        const width = divWidth-padding;
+        const x0 = padding;
+        const y0 = divHeight-padding;
+
+        for (let index = 0; index < 4; index++) {
+            let val = [];
+            for (let i=0; i<numberOfPoints; i++) {
+                val[i] = randomNumber(height);
+            }
+            fightersFollowed[index] = new Fighter(null, null, val);
+        }
+
+        const thumbnails = d3.select("#fighters-followed");
         const graph = d3.select("#graph")
             .append("svg")
             .attr("width", "100%")
-            .attr("height", height);
+            .attr("height", "100%");
 
-        graph.append("line")
-            .attr("x1", 50)
-            .attr("x2", "100%")
-            .attr("y1", height-50)
-            .attr("y2", height-50)
-            .style("stroke", "#000");
-        graph.append("line")
-            .attr("x1", 50)
-            .attr("x2", 50)
-            .attr("y1", 0)
-            .attr("y2", height-50)
-            .style("stroke", "#000");
-        
+        graph.append("polyline")
+            .attr("points", (x0)+","+(0)+" "+(x0)+","+(y0)+" "+(divWidth)+","+(y0))
+            .attr("vector-effect", "non-scaling-stroke")
+            .style("stroke", "#000")
+            .style("stroke-width", "3px")
+            .style("fill", "none");
+
         for (let index = 0; index < length; index++) {
+            const fighter = fightersFollowed[index];
+            thumbnails.append("div")
+                .attr("class", "thumbnail fighter-"+(index))
+                .style("border-color", (fighter.colour))
+                    .append("img")
+                    .attr("src", "http://imagec.ufc.com/http%253A%252F%252Fmedia.ufc.tv%252F%252Ffighter_images%252FDaniel_Cormier%252FCORMIER_DANIEL.png?mw300-mh300")
+                    .style("width", "100%")
+                    .style("height", "100%")
+                    .style("object-fit", "cover");
 
+            graph.append("polyline")
+                .attr("points", function () {
+                    let str = (x0)+","+(fighter.values[0]);
+                    for (let i = 1; i < numberOfPoints; i++) {
+                        str += " "+(x0+i*width/(numberOfPoints-1))+","+(fighter.values[i]);
+                    }
+                    return str;
+                })
+                .attr("class", "fighter-"+(index))
+                .style("stroke", (fighter.colour));
         }
-        </script>
+        thumbnails.append("div")
+            .attr("class", "thumbnail")
+            .attr("id", "add-fighter")
+                .append("div")
+                .attr("class", "glyphicon glyphicon-plus");
+    }
+    function rePlot() {
+        d3.selectAll("#graph svg").remove();
 
-    </div>
+        let computedDiv = window.getComputedStyle(document.getElementById("graph"), null);
+        let divWidth = parseInt(computedDiv.width);
+        let divHeight = parseInt(computedDiv.height);
+
+        const length = 4;
+        const padding = 25;
+        const height = divHeight-padding;
+        const width = divWidth-padding;
+        const x0 = padding;
+        const y0 = divHeight-padding;
+
+        const graph = d3.select("#graph")
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%");
+
+        graph.append("polyline")
+            .attr("points", (x0)+","+(0)+" "+(x0)+","+(y0)+" "+(divWidth)+","+(y0))
+            .attr("vector-effect", "non-scaling-stroke")
+            .style("stroke", "#000")
+            .style("stroke-width", "3px")
+            .style("fill", "none");
+
+        for (let index = 0; index < length; index++) {
+            const fighter = fightersFollowed[index];
+
+            graph.append("polyline")
+                .attr("points", function () {
+                    let str = (x0)+","+(fighter.values[0]);
+                    for (let i = 1; i < numberOfPoints; i++) {
+                        str += " "+(x0+i*width/(numberOfPoints-1))+","+(fighter.values[i]);
+                    }
+                    return str;
+                })
+                .attr("class", "fighter-"+(index))
+                .style("stroke", (fighter.colour));
+        }
+    }
+    function sort(arr) {
+        return arr.concat().sort(subtract1);
+    }
+    function sortDescending(arr) {
+        return arr.concat().sort(subtract2);
+    }
+    function subtract1(a, b) {
+        return a - b;
+    }
+    function subtract2(a, b) {
+        return b - a;
+    }
+    function randomColour() {
+        return "hsl("+(Math.floor(Math.random()*360))+","+(Math.floor(Math.sqrt(Math.random())*100))+"%,50%)";
+    }
+    function randomNumber(maxValue) {
+        return Math.floor(Math.random()*maxValue);
+    }
+    plot();
+    </script>
 </body>
 </html>
