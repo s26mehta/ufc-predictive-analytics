@@ -1,44 +1,30 @@
 body {
     padding-top: 50px;
 }
-
-svg a:hover {
-    text-decoration: none;
-}
-
 p {
     text-align: center;
 }
 
-.preview {
+svg a:hover {
+    text-decoration: none;
+}
+line {
+    stroke: black;
+    stroke-width: 3px;
+}
+
+a.preview {
+    border-radius: 10px;
+    text-decoration: none;
+    color: black;
+    box-shadow:1px 1px 2px #aaa, -1px -1px 2px #aaa, 1px -1px 2px #aaa, -1px 1px 2px #aaa;
     padding-bottom: 15px;
+    width: 315px;
+    height: 210px;
 }
 
-polyline {
-    stroke-width: 2px;
-    fill: none;
-}
-
-div.thumbnail {
-    width: 200px;
-    height: 300px;
-    margin: 10px;
-    padding: 10px;
-    border-color: #777777;
-    border-width: 3px;
-    border-style: solid;
-    float: left;
-}
-div#add-fighter {
-    border-style: dashed;
-    display: table;
-}
-div#add-fighter .glyphicon {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-    font-size: 87px;
-    color: #777777;
+.preview:hover {
+    box-shadow:2px 2px 2px lightblue, -2px -2px 2px lightblue, 2px -2px 2px lightblue, -2px 2px 2px lightblue;
 }
 
 @media (min-width: 768px) {
@@ -55,4 +41,38 @@ div#add-fighter .glyphicon {
     .col-md-3:first-of-type {
         margin-left: 7.5%;
     }
+}
+
+
+polyline {
+    stroke-width: 2px;
+    fill: none;
+}
+
+div.thumbnail {
+    width: 200px;
+    height: 300px;
+    margin: 10px;
+    padding: 10px;
+    border-color: #888;
+    border-width: 3px;
+    border-style: solid;
+    float: left;
+}
+div#add-fighter {
+    border-style: dashed;
+    display: table;
+}
+div#add-fighter .glyphicon {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 87px;
+    color: #888;
+}
+a:hover div#add-fighter {
+    border-color: #444;
+}
+a:hover div#add-fighter .glyphicon {
+    color: #444;
 }

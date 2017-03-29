@@ -99,9 +99,9 @@
                 </a>
             </div>
             <ul class="nav navbar-nav">
-                <li class="active"><a href="index.html">Home</a></li>
+                <li><a href="index.html">Home</a></li>
                 <li>
-                    <a href="#">Search</a>
+                    <a href="search.html">Search</a>
                 </li>
             </ul>
             <form class="navbar-form navbar-left">
@@ -120,7 +120,9 @@
         </div>
     </nav>
     <div class="container-fluid">
-        <p>Dashboard</p>
+        <div class="page-header">
+            <h1>Dashboard</h1>
+        </div>
         <div id="graph" style="width:100%;height:500px;"></div>
         <div id="fighters-followed"></div>
     </div>
@@ -219,11 +221,13 @@
                 .attr("class", "fighter-"+(index))
                 .style("stroke", (fighter.colour));
         }
-        thumbnails.append("div")
-            .attr("class", "thumbnail")
-            .attr("id", "add-fighter")
+        thumbnails.append("a")
+            .attr("href", "search.html")
                 .append("div")
-                .attr("class", "glyphicon glyphicon-plus");
+                .attr("class", "thumbnail")
+                .attr("id", "add-fighter")
+                    .append("div")
+                    .attr("class", "glyphicon glyphicon-plus");
     }
     function rePlot() {
         d3.selectAll("#graph svg").remove();

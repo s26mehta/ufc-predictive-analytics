@@ -102,7 +102,7 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="index.html">Home</a></li>
                 <li>
-                    <a href="#">Search</a>
+                    <a href="search.html">Search</a>
                 </li>
             </ul>
             <form class="navbar-form navbar-left">
@@ -145,10 +145,10 @@
     </div>
     <!--Previews-->
     <div>
-        <div class="jumbotron" style="margin-bottom:0;">
+        <div class="jumbotron">
             <p>Access any statistics on UFC</p>
             <div class="container-fluid">
-                <div class="col-sm-4 col-md-3 preview" style="box-shadow:1px 1px 2px #aaa, -1px -1px 2px #aaa, 1px -1px 2px #aaa, -1px 1px 2px #aaa;">
+                <a class="col-sm-4 col-md-3 preview" href="#">
                     <p>View Stats</p>
                     <div style="width:35%;float:left;">
                         <img src="http://imagec.ufc.com/http%253A%252F%252Fmedia.ufc.tv%252F%252Ffighter_images%252FGermaine_de_Randadamie%252FGERMAINE_DE_RANDAMIE_CHAMP.png?mw300-mh300" style="width:100px;height:150px;object-fit:cover;">
@@ -159,8 +159,8 @@
                         <li>3 Losses</li>
                         <li>0 Draws</li>
                     </ul>
-                </div>
-                <div class="col-sm-4 col-md-3 preview" style="box-shadow:1px 1px 2px #aaa, -1px -1px 2px #aaa, 1px -1px 2px #aaa, -1px 1px 2px #aaa;">
+                </a>
+                <a class="col-sm-4 col-md-3 preview" href="#">
                     <p>Analyze</p>
                     <div>
                         <div style="float:left;width:100px;">
@@ -173,12 +173,17 @@
                             <p style="font-size:14px;display:table-cell;vertical-align:middle;">CORMIER VS JOHNSON</p>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-4 col-md-3 preview" style="box-shadow:1px 1px 2px #aaa, -1px -1px 2px #aaa, 1px -1px 2px #aaa, -1px 1px 2px #aaa;">
+                </a>
+                <a class="col-sm-4 col-md-3 preview" href="#">
                     <p>Predict</p>
-                    <svg width="300px" height="150px">
-                    </svg>
-                </div>
+                    <div>
+                        <svg width="100%" height="100%">
+                            <line x1="0" y1="100%" x2="100%" y2="100%"></line>
+                            <rect x="20%" y="60%" width="20%" height="40%"></rect>
+                            <rect x="60%" y="40%" width="20%" height="60%"></rect>
+                        </svg>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
