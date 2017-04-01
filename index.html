@@ -1,0 +1,214 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>UFC Data Analytics</title>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <script>
+    $(document).ready(function() {
+        if (true) {
+            $(document.getElementById("account").children).toggle();
+        }
+    });
+
+    </script>
+</head>
+<body>
+    <!--Sign Up modal-->
+    <div class="modal fade" id="signup" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Sign Up</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputFirstName" class="col-sm-3 control-label">First Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputLastName" class="col-sm-3 control-label">Last Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newUsername" class="col-sm-3 control-label">Username</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="newUsername" placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword" class="col-sm-3 control-label">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" id="newPassword" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-sm-3 control-label">Email</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control" id="email" placeholder="Email">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Login modal-->
+    <div class="modal fade" id="login" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Login</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="username-email" class="col-sm-3 control-label">Username/Email</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="username-email" placeholder="Username/Email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-sm-3 control-label">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" id="password" placeholder="Password">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Navbar-->
+    <nav class="navbar navbar-fixed-top navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">
+                    UFC Data Analytics
+                </a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="index.html">Home</a></li>
+                <li><a href="search.html">Search</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" id="account">
+                <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#signup">Sign Up</a></li>
+                <li style="display: none;"><a href="live-fight.html">Live Fight</a></li>
+                <li style="display: none;"><a href="dashboard.html">Dashboard</a></li>
+                <li style="display: none;">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span id="user">Welcome, </span><span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu navbar-inverse">
+                        <li><a href="#" >Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!--Landing page-->
+    <div style="background:url('images/ring.jpg') no-repeat; background-size:cover;">
+        <div class="container-fluid">
+            <div style="display:table;height:700px;width:50%;float:left;">
+                <div style="margin-top:120px;">
+                    <p class="outline" style="width:70%;margin-left:15%;text-align:left;">Get all stats and social predictions for UFC.</p>
+                </div>
+                <!--
+                <svg height="64" width="144">
+                    <a href="#">
+                        <ellipse cx="72" cy="32" rx="70" ry="30" style="fill:red;stroke:black;stroke-width:4" />
+                        <text x="72" y="32" fill="white" text-anchor="middle" dominant-baseline="central" font-weight="bold" font-style="italic">UFC Analytics</text>
+                    </a>
+                    Sorry, your browser does not support inline SVG.
+                </svg>
+            -->
+            </div>
+            <div style="heigth:700px;width:50%;margin-left:50%;">
+                <img src="images/Conor-McGregor.png" align="right" style="height:auto;width:467px;float:right;">
+            </div>
+        </div>
+    </div>
+    <!--Previews-->
+    <div>
+        <div class="jumbotron" style="margin-bottom:0;">
+            <p>Access any statistics on UFC</p>
+            <div class="container-fluid">
+                <a class="col-sm-4 col-md-3 preview" href="#">
+                    <p>View Stats</p>
+                    <div style="width:35%;float:left;">
+                        <img src="images/Germaine-De-Randamie_thumbnail.png" style="width:100px;height:150px;object-fit:cover;">
+                    </div>
+                    <ul style="margin-left:35%;">
+                        <li>Germaine de Randamie</li>
+                        <li>7 Wins</li>
+                        <li>3 Losses</li>
+                        <li>0 Draws</li>
+                    </ul>
+                </a>
+                <a class="col-sm-4 col-md-3 preview" href="#">
+                    <p>Analyze</p>
+                    <div>
+                        <div style="float:left;width:100px;">
+                            <img src="images/Daniel-Cormier_thumbnail.png" style="width:100px;height:150px;object-fit:cover;">
+                        </div>
+                        <div style="float:right;width:100px;">
+                            <img src="images/Anthony-Johnson_thumbnail.png" style="width:100px;height:150px;object-fit:cover;">
+                        </div>
+                        <div style="margin-left:35%;margin-right:35%;padding:0;margin-top:0;margin-bottom:0;display:table;height:150px;">
+                            <p style="font-size:14px;display:table-cell;vertical-align:middle;">CORMIER VS JOHNSON</p>
+                        </div>
+                    </div>
+                </a>
+                <a class="col-sm-4 col-md-3 preview" href="#">
+                    <p>Predict</p>
+                    <div>
+                        <svg width="100%" height="100%">
+                            <line x1="0" y1="100%" x2="100%" y2="100%"></line>
+                            <rect x="20%" y="60%" width="20%" height="40%"></rect>
+                            <rect x="60%" y="40%" width="20%" height="60%"></rect>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!--Search-->
+    <div class="container-fluid" style="background:url('images/ring.jpg') no-repeat; background-size:cover; height:700px; width:100%; position:absolute;">
+        <div style="background:url('images/ring.jpg') no-repeat; background-size:cover; z-index:-2;"></div>
+        <div style="height:100%;padding-top:1%;padding-bottom:1%;position:absolute;">
+            <img src="images/Daniel-Cormier_left.png" style="height:100%;width:auto;">
+        </div>
+        <div class="row" style="margin-left:20%;margin-right:20%;height:700px;width:60%;display:table;">
+            <div style="display:table-cell;vertical-align:middle;">
+                <p class="outline">Fighter Stats</p>
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Search...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Contact-->
+    <div style="margin-top:700px;min-height:400px;background:#333;">
+        <div class="container-fluid">
+            <p>Contact</p>
+
+        </div>
+    </div>
+</body>
+</html>
