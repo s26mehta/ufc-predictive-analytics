@@ -244,9 +244,9 @@ def add_fighter():
 
 @app.route('/api/get_live_fight_data', methods=['GET'])
 def live_fight_data():
-    # if not request.json:
-    #     abort(400)
-    # try:
+    if not request.json:
+        abort(400)
+    try:
         cnxn = pyodbc.connect(
             'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
             ';PWD=' + password)
@@ -283,8 +283,8 @@ def live_fight_data():
         cnxn.close()
         return jsonify(success=True,
                        response = res)
-    # except:
-    #     return jsonify(success=False)
+    except:
+        return jsonify(success=False)
 
 if __name__ == '__main__':
     app.run(debug=True)
