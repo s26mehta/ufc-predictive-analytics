@@ -70,7 +70,7 @@
                     $(".modal").modal("hide");
                     $(document.getElementById("account").children).toggle();
                     userId = result['user_id'];
-                    document.getElementById("user").appendChild(document.createTextNode(result['first_name']));
+                    document.getElementById("user").appendChild(document.createTextNode(document.getElementById("inputFirstName").value));
                 },
                 error:function(msg){
                     console.error(msg);
