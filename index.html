@@ -10,31 +10,47 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
 
     <script>
+    var userId;
     $(document).ready(function() {
-        // $.ajax({
-        //     url:"http://127.0.0.1:5000/api/login",
-        //     type:"GET",
-        //     dataType:"json",
-        //     success:function(result){
-        //         $(document.getElementById("account").children).toggle();
-        //     }
-        // });
-        //
-        // let username = window.sessionStorage.getItem("username");
-        // let password = window.sessionStorage.getItem("password");
-        // if(username&&password) {
-        //     document.getElementById("username").value = username;
-        //     document.getElementById("password").value = password;
-        //     $(document.getElementById("login")).find("form").submit();
-        // }
-        //
-        // $(document.getElementById("login-button")).on("click", function(){
-        //     window.sessionStorage.setItem("username", document.getElementById("username").value);
-        //     window.sessionStorage.setItem("password", document.getElementById("password").value);
-        //     $(document.getElementById("login")).find("form").submit();
-        // })
+        function loginAjax() {
+            let username = document.getElementById("username").value,
+                password = document.getElementById("password").value;
+            $.ajax({
+                url:"http://127.0.0.1:5000/api/login",
+                type:"POST",
+                dataType:"json",
+                data:{
+                    "user_name":username,
+                    "password":password
+                },
+                success:function(result){
+                    console.log("Login succeeded");
+                    window.sessionStorage.setItem("username", username);
+                    window.sessionStorage.setItem("password", password);
+                    userId = result['user_id'];
+                    $(".modal").modal("hide");
+                    $(document.getElementById("account").children).toggle();
+                },
+                error:function(msg){
+                    console.error(msg);
+                }
+            });
+        }
+        let username = window.sessionStorage.getItem("username");
+        let password = window.sessionStorage.getItem("password");
+        if(username&&password) {
+            document.getElementById("username").value = username;
+            document.getElementById("password").value = password;
+            loginAjax();
+        }
+
+        $(document.getElementById("login-button")).on("click", function(){
+            loginAjax();
+        });
 
         $(document.getElementById("signup-button")).on("click", function(){
+            let username = document.getElementById("newUsername").value,
+                password = document.getElementById("newPassword").value;
             $.ajax({
                 url:"http://127.0.0.1:5000/api/sign_up",
                 type:"POST",
@@ -42,28 +58,24 @@
                 data:{
                     "first_name":document.getElementById("inputFirstName").value,
                     "last_name":document.getElementById("inputLastName").value,
-                    "user_name":document.getElementById("newUsername").value,
-                    "password":document.getElementById("newPassword").value,
+                    "user_name":username,
+                    "password":password,
                     "email":document.getElementById("email").value
                 },
                 success:function(result){
                     console.log("Sign up succeeded");
-                    console.log(result['user_id'])
+                    window.sessionStorage.setItem("username", username);
+                    window.sessionStorage.setItem("password", password);
+                    userId = result['user_id'];
+                    $(".modal").modal("hide");
+                    $(document.getElementById("account").children).toggle();
                 },
                 error:function(msg){
                     console.error(msg);
                 }
-            })
+            });
         });
 
-        // $.ajax({
-        //     type:"GET",
-        //     dataType:"json",
-        //     data:{"username":window.sessionStorage}
-        // })
-        // if () {
-        //     $(document.getElementById("account").children).toggle();
-        // }
         $(document.getElementById("search")).on("click", function() {
             window.location.href="search.html?search="+document.getElementById("search-text").value;
         });
