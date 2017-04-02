@@ -27,9 +27,10 @@
                     console.log("Login succeeded");
                     window.sessionStorage.setItem("username", username);
                     window.sessionStorage.setItem("password", password);
-                    userId = result['user_id'];
                     $(".modal").modal("hide");
                     $(document.getElementById("account").children).toggle();
+                    userId = result['user_id'];
+                    document.getElementById("user").appendChild(document.createTextNode(result['first_name']));
                 },
                 error:function(msg){
                     console.error(msg);
@@ -66,9 +67,10 @@
                     console.log("Sign up succeeded");
                     window.sessionStorage.setItem("username", username);
                     window.sessionStorage.setItem("password", password);
-                    userId = result['user_id'];
                     $(".modal").modal("hide");
                     $(document.getElementById("account").children).toggle();
+                    userId = result['user_id'];
+                    document.getElementById("user").appendChild(document.createTextNode(result['first_name']));
                 },
                 error:function(msg){
                     console.error(msg);
