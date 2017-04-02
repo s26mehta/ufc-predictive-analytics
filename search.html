@@ -121,7 +121,7 @@
                                 <input type="email" class="form-control" id="email" placeholder="Email">
                             </div>
                         </div>
-                        <button class="btn btn-primary" type="submit">Sign Up</button>
+                        <button class="btn btn-primary" type="button" id="signup-button">Sign Up</button>
                     </form>
                 </div>
             </div>
@@ -138,9 +138,9 @@
                 <div class="modal-body">
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <label for="username-email" class="col-sm-3 control-label">Username/Email</label>
+                            <label for="username" class="col-sm-3 control-label">Username</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="username-email" placeholder="Username/Email">
+                                <input type="text" class="form-control" id="username" placeholder="Username">
                             </div>
                         </div>
                         <div class="form-group">
@@ -149,7 +149,7 @@
                                 <input type="password" class="form-control" id="password" placeholder="Password">
                             </div>
                         </div>
-                        <button class="btn btn-primary" type="submit">Login</button>
+                        <button class="btn btn-primary" type="button" id="login-button">Login</button>
                     </form>
                 </div>
             </div>
@@ -164,8 +164,8 @@
                 </a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="index.html">Home</a></li>
-                <li class="active"><a href="search.html">Search</a></li>
+                <li class="active"><a href="index.html">Home</a></li>
+                <li><a href="search.html">Search</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right" id="account">
                 <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
@@ -177,7 +177,7 @@
                         <span id="user">Welcome, </span><span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu navbar-inverse">
-                        <li><a href="#" >Logout</a></li>
+                        <li><a href="#" id="logout">Logout</a></li>
                     </ul>
                 </li>
             </ul>

@@ -1,3 +1,4 @@
+var userId;
 $(document).ready(function() {
     function loginAjax() {
         let username = document.getElementById("username").value,
@@ -11,13 +12,17 @@ $(document).ready(function() {
                 "password":password
             },
             success:function(result){
-                console.log("Login succeeded");
-                window.sessionStorage.setItem("username", username);
-                window.sessionStorage.setItem("password", password);
-                $(".modal").modal("hide");
-                $(document.getElementById("account").children).toggle();
-                userId = result['user_id'];
-                document.getElementById("user").appendChild(document.createTextNode(result['first_name']));
+                if(result['success']){
+                    console.log("Login succeeded");
+                    window.sessionStorage.setItem("username", username);
+                    window.sessionStorage.setItem("password", password);
+                    $(".modal").modal("hide");
+                    $(document.getElementById("account").children).toggle();
+                    userId = result['user_id'];
+                    document.getElementById("user").appendChild(document.createTextNode(result['first_name']));
+                }
+                else
+                    console.log("Login failed");
             },
             error:function(msg){
                 console.error(msg);
@@ -53,14 +58,18 @@ $(document).ready(function() {
                 "email":document.getElementById("email").value
             },
             success:function(result){
-                console.log("Sign up succeeded");
-                window.sessionStorage.setItem("username", username);
-                window.sessionStorage.setItem("password", password);
-                $(".modal").modal("hide");
-                $(document.getElementById("account").children).toggle();
-                userId = result['user_id'];
-                document.getElementById("user").appendChild(document.createTextNode(firstName));
-                $(document.getElementsByClassName('login-required')).html("<h1 style='color:red;'>Login Required</h1>");
+                if(result['success']) {
+                    console.log("Sign up succeeded");
+                    window.sessionStorage.setItem("username", username);
+                    window.sessionStorage.setItem("password", password);
+                    $(".modal").modal("hide");
+                    $(document.getElementById("account").children).toggle();
+                    userId = result['user_id'];
+                    document.getElementById("user").appendChild(document.createTextNode(firstName));
+                    $(document.getElementsByClassName('login-required')).html("<h1 style='color:red;'>Login Required</h1>");
+                }
+                else
+                    console.log("Sign up failed");
             },
             error:function(msg){
                 console.error(msg);

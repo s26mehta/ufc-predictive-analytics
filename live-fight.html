@@ -51,11 +51,6 @@
             .attr("text-anchor", "middle")
             .attr("dominant-baseline", "central")
             .attr("fill", "#fff");
-
-        if (false) {
-            $(document.getElementById("account").children).toggle();
-
-        }
     });
     </script>
 </head>
@@ -100,7 +95,7 @@
                                 <input type="email" class="form-control" id="email" placeholder="Email">
                             </div>
                         </div>
-                        <button class="btn btn-primary" type="submit">Sign Up</button>
+                        <button class="btn btn-primary" type="button" id="signup-button">Sign Up</button>
                     </form>
                 </div>
             </div>
@@ -117,9 +112,9 @@
                 <div class="modal-body">
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <label for="username-email" class="col-sm-3 control-label">Username/Email</label>
+                            <label for="username" class="col-sm-3 control-label">Username</label>
                             <div class="col-sm-9">
-                                <input type="text" class="form-control" id="username-email" placeholder="Username/Email">
+                                <input type="text" class="form-control" id="username" placeholder="Username">
                             </div>
                         </div>
                         <div class="form-group">
@@ -128,7 +123,7 @@
                                 <input type="password" class="form-control" id="password" placeholder="Password">
                             </div>
                         </div>
-                        <button class="btn btn-primary" type="submit">Login</button>
+                        <button class="btn btn-primary" type="button" id="login-button">Login</button>
                     </form>
                 </div>
             </div>
@@ -143,25 +138,26 @@
                 </a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="index.html">Home</a></li>
+                <li class="active"><a href="index.html">Home</a></li>
                 <li><a href="search.html">Search</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right" id="account">
                 <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
                 <li><a href="#" data-toggle="modal" data-target="#signup">Sign Up</a></li>
-                <li style="display: none;" class="active"><a href="live-fight.html">Live Fight</a></li>
+                <li style="display: none;"><a href="live-fight.html">Live Fight</a></li>
                 <li style="display: none;"><a href="dashboard.html">Dashboard</a></li>
                 <li style="display: none;">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                         <span id="user">Welcome, </span><span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu navbar-inverse">
-                        <li><a href="#" >Logout</a></li>
+                        <li><a href="#" id="logout">Logout</a></li>
                     </ul>
                 </li>
             </ul>
         </div>
     </nav>
+    <!--Content-->
     <div class="container-fluid login-required" style="width:100%;">
         <div class="page-header">
             <h1>Live Fight</h1>

@@ -9,7 +9,7 @@ server = 'ufcserve.database.windows.net'
 database = 'ufcDB'
 username = 's26mehta'
 password = 'Syde223@'
-driver = '{ODBC Driver 13 for SQL Server}'
+driver = '{SQL Server}'
 
 @app.route('/api/sign_up', methods=['POST'])
 def sign_up():
@@ -17,9 +17,7 @@ def sign_up():
     if not request.form:
         abort(400)
     try:
-        cnxn = pyodbc.connect(
-            'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
-            ';PWD=' + password)
+        cnxn = pyodbc.connect('DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
         cursor = cnxn.cursor()
         cursor.execute("Insert into users(user_name, first_name, last_name, email, password) " \
                     "VALUES ('%s', '%s', '%s', '%s', '%s')" % (request.form['user_name'], request.form['first_name'],
@@ -41,8 +39,6 @@ def sign_up():
 
 @app.route('/api/log_in', methods=['POST'])
 def log_in():
-    print request.form
-    print request.json
     if not request.form:
         abort(400)
     try:
@@ -56,7 +52,7 @@ def log_in():
         cnxn.commit()
         cursor.close()
         cnxn.close()
-        if row[1] == request.form['username'] and row[2] == request.form['password']:
+        if row[1] == request.form['user_name'] and row[2] == request.form['password']:
             return jsonify(success=True, user_id=row[0], first_name=row[3])
         else:
             return jsonify(success=False)
