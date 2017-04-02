@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>UFC Data Analytics</title>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <script>
+    function getParameterByName(name, url) {
+        if (!url) {
+          url = window.location.href;
+        }
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+    function getFighterData(searchString) {
+        $.ajax({
+            type:"GET",
+            dataType:"json",
+            data:{"": searchString}
+            url:"http://127.0.0.1:5000/api/fighter_data"
+            success:function(result) {
+
+            }
+        })
+    }
+    $(document).ready(function() {
+        let searchText = getParameterByName("search");
+        document.getElementById("search-text").value = searchText;
+        if(searchText) {
+
+        }
+        $(document.getElementById("search")).on("click", function() {
+            document.getElementById("search-text").value;
+        });
+        if (true) {//logged in
+            $(document.getElementById("account").children).toggle();
+            let firstName = "";
+            document.getElementById("user").appendChild(document.createTextNode(firstName));
+
+            //Get data
+            // $.ajax({
+            //     type:"GET",
+            //     dataType:"jsonp",
+            //     contentType:false,
+            //     url:"http://ufc-data-api.ufc.com/api/v3/fighters",
+            //     success:function(result) {
+            //         console.log("here");
+            //     }
+            // });
+
+            let searchResults = d3.select("#search-results");
+            length = 1;
+            for(let index = 0; index < length; index++) {
+                //obj[index]
+                searchResults.append("div")
+                    .style("float", "left")
+                    .style("width", "200px");
+                searchResults.append("div")
+                    .style("margin-left", "200px")
+                    .style("width", "200px");
+            }
+        }
+    });
+
+    // $.getJSON("http://ufc-data-api.ufc.com/api/v3/iphone/fighters", function(data) {
+    //     var ufcData = JSON.parse(data);
+    //
+    //     console.log(ufcData.length);
+    // });
+
+    </script>
+</head>
+<body>
+    <!--Sign Up modal-->
+    <div class="modal fade" id="signup" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Sign Up</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputFirstName" class="col-sm-3 control-label">First Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputLastName" class="col-sm-3 control-label">Last Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newUsername" class="col-sm-3 control-label">Username</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="newUsername" placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword" class="col-sm-3 control-label">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" id="newPassword" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-sm-3 control-label">Email</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control" id="email" placeholder="Email">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Sign Up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Login modal-->
+    <div class="modal fade" id="login" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Login</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="username-email" class="col-sm-3 control-label">Username/Email</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="username-email" placeholder="Username/Email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-sm-3 control-label">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" id="password" placeholder="Password">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Navbar-->
+    <nav class="navbar navbar-fixed-top navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">
+                    UFC Data Analytics
+                </a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li class="active"><a href="search.html">Search</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" id="account">
+                <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#signup">Sign Up</a></li>
+                <li style="display: none;"><a href="live-fight.html">Live Fight</a></li>
+                <li style="display: none;"><a href="dashboard.html">Dashboard</a></li>
+                <li style="display: none;">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span id="user">Welcome, </span><span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu navbar-inverse">
+                        <li><a href="#" >Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!--Search row-->
+    <div class="container-fluid">
+        <div class="row jumbotron">
+            <div style="margin-left:20%;margin-right:20%;">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Search..." id="search-text">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" id="search">Go</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="search-results"></div>
+    </div>
+</body>
+</html>

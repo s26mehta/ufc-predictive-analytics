@@ -1,0 +1,293 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>UFC Data Analytics</title>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <script>
+    $(document).ready(function() {
+        if (false) {
+            $(document.getElementById("account").children).toggle();
+        }
+    });
+    </script>
+</head>
+<body>
+    <!--Sign Up modal-->
+    <div class="modal fade" id="signup" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Sign Up</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputFirstName" class="col-sm-3 control-label">First Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputLastName" class="col-sm-3 control-label">Last Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newUsername" class="col-sm-3 control-label">Username</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="newUsername" placeholder="Username">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword" class="col-sm-3 control-label">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" id="newPassword" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-sm-3 control-label">Email</label>
+                            <div class="col-sm-9">
+                                <input type="email" class="form-control" id="email" placeholder="Email">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Sign Up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Login modal-->
+    <div class="modal fade" id="login" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Login</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="username-email" class="col-sm-3 control-label">Username/Email</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="username-email" placeholder="Username/Email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-sm-3 control-label">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" class="form-control" id="password" placeholder="Password">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" type="submit">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Navbar-->
+    <nav class="navbar navbar-fixed-top navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">
+                    UFC Data Analytics
+                </a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="search.html">Search</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" id="account">
+                <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#signup">Sign Up</a></li>
+                <li style="display: none;"><a href="live-fight.html">Live Fight</a></li>
+                <li style="display: none;" class="active"><a href="dashboard.html">Dashboard</a></li>
+                <li style="display: none;">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span id="user">Welcome, </span><span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu navbar-inverse">
+                        <li><a href="#" >Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>Dashboard</h1>
+        </div>
+        <div id="graph" style="width:100%;height:500px;"></div>
+        <div id="fighters-followed"></div>
+    </div>
+
+    <script>
+    const waitForFinalEvent = (()=>{
+        let timers = {};
+        return function (callback, ms, uniqueId) {
+            if (timers[uniqueId]) {
+                clearTimeout(timers[uniqueId]);
+            }
+            timers[uniqueId] = setTimeout(callback, ms);
+        };
+    })();
+    class Fighter {
+        constructor(name, colour, values) {
+            this.name = name;
+            if (colour) {
+                this.colour = colour;
+            }
+            else {
+                this.colour = randomColour();
+            }
+            this.values = values;
+        }
+        numberOfValues() {
+            return this.values.length;
+        }
+        maxValue(length) {
+            return sortDescending(this.values)[0];
+        }
+    }
+    window.addEventListener("resize", ()=> {
+    	waitForFinalEvent(this.rePlot(), 200, "");
+    });
+
+    let fightersFollowed = [];
+    const numberOfPoints = 5;
+
+    function plot() {
+        d3.selectAll("#graph svg").remove();
+
+        let computedDiv = window.getComputedStyle(document.getElementById("graph"), null);
+        let divWidth = parseInt(computedDiv.width);
+        let divHeight = parseInt(computedDiv.height);
+        // console.log(divWidth);
+
+        const length = 4;
+
+        const padding = 25;
+        const height = divHeight-padding;
+        const width = divWidth-padding;
+        const x0 = padding;
+        const y0 = divHeight-padding;
+
+        for (let index = 0; index < 4; index++) {
+            let val = [];
+            for (let i=0; i<numberOfPoints; i++) {
+                val[i] = randomNumber(height);
+            }
+            fightersFollowed[index] = new Fighter(null, null, val);
+        }
+
+        const thumbnails = d3.select("#fighters-followed");
+        const graph = d3.select("#graph")
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%");
+
+        graph.append("polyline")
+            .attr("points", (x0)+","+(0)+" "+(x0)+","+(y0)+" "+(divWidth)+","+(y0))
+            .attr("vector-effect", "non-scaling-stroke")
+            .style("stroke", "#000")
+            .style("stroke-width", "3px")
+            .style("fill", "none");
+
+        for (let index = 0; index < length; index++) {
+            const fighter = fightersFollowed[index];
+
+            thumbnails.append("div")
+                .attr("class", "thumbnail fighter-"+(index))
+                .style("border-color", (fighter.colour))
+                    .append("img")
+                    .attr("src", "http://imagec.ufc.com/http%253A%252F%252Fmedia.ufc.tv%252F%252Ffighter_images%252FDaniel_Cormier%252FCORMIER_DANIEL.png?mw300-mh300");
+
+            graph.append("polyline")
+                .attr("points", function () {
+                    let str = (x0)+","+(fighter.values[0]);
+                    for (let i = 1; i < numberOfPoints; i++) {
+                        str += " "+(x0+i*width/(numberOfPoints-1))+","+(fighter.values[i]);
+                    }
+                    return str;
+                })
+                .attr("class", "fighter-"+(index))
+                .style("stroke", (fighter.colour));
+        }
+        thumbnails.append("a")
+            .attr("href", "search.html")
+                .append("div")
+                .attr("class", "thumbnail")
+                .attr("id", "add-fighter")
+                    .append("div")
+                    .attr("class", "glyphicon glyphicon-plus");
+    }
+    function rePlot() {
+        d3.selectAll("#graph svg").remove();
+
+        let computedDiv = window.getComputedStyle(document.getElementById("graph"), null);
+        let divWidth = parseInt(computedDiv.width);
+        let divHeight = parseInt(computedDiv.height);
+
+        const length = 4;
+        const padding = 25;
+        const height = divHeight-padding;
+        const width = divWidth-padding;
+        const x0 = padding;
+        const y0 = divHeight-padding;
+
+        const graph = d3.select("#graph")
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%");
+
+        graph.append("polyline")
+            .attr("points", (x0)+","+(0)+" "+(x0)+","+(y0)+" "+(divWidth)+","+(y0))
+            .attr("vector-effect", "non-scaling-stroke")
+            .style("stroke", "#000")
+            .style("stroke-width", "3px")
+            .style("fill", "none");
+
+        for (let index = 0; index < length; index++) {
+            const fighter = fightersFollowed[index];
+
+            graph.append("polyline")
+                .attr("points", function () {
+                    let str = (x0)+","+(fighter.values[0]);
+                    for (let i = 1; i < numberOfPoints; i++) {
+                        str += " "+(x0+i*width/(numberOfPoints-1))+","+(fighter.values[i]);
+                    }
+                    return str;
+                })
+                .attr("class", "fighter-"+(index))
+                .style("stroke", (fighter.colour));
+        }
+    }
+    function sort(arr) {
+        return arr.concat().sort(subtract1);
+    }
+    function sortDescending(arr) {
+        return arr.concat().sort(subtract2);
+    }
+    function subtract1(a, b) {
+        return a - b;
+    }
+    function subtract2(a, b) {
+        return b - a;
+    }
+    function randomColour() {
+        return "hsl("+(Math.floor(Math.random()*360))+","+(Math.floor(Math.sqrt(Math.random())*100))+"%,50%)";
+    }
+    function randomNumber(maxValue) {
+        return Math.floor(Math.random()*maxValue);
+    }
+    plot();
+    </script>
+</body>
+</html>
