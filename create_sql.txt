@@ -1,0 +1,131 @@
+Create the UFC Database:
+
+CREATE TABLE users (
+  id INT NOT NULL IDENTITY(1,1),
+  password VARCHAR(120) NOT NULL,
+  first_name VARCHAR(120) NOT NULL,
+  last_name VARCHAR(120) NOT NULL,
+  email VARCHAR(120) NOT NULL UNIQUE,
+  user_name VARCHAR(120) NOT NULL UNIQUE,
+  PRIMARY KEY (id))
+
+CREATE TABLE dashboards (
+  id INT NOT NULL IDENTITY(1,1),
+  fighters VARCHAR(120) NULL,
+  user_id INT NOT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT id1
+    FOREIGN KEY (user_id)
+    REFERENCES users (id))
+
+CREATE TABLE fighters (
+  id VARCHAR(45) NOT NULL,
+  first_name VARCHAR(120) NULL,
+  last_name VARCHAR(120) NULL,
+  nickname VARCHAR(120) NULL,
+  wins VARCHAR(45) NULL,
+  losses VARCHAR(45) NULL,
+  draws VARCHAR(45) NULL,
+  rank VARCHAR(45) NULL,
+  pfp_rank VARCHAR(45) NULL,
+  profile_image VARCHAR(250) NULL,
+  fighter_status VARCHAR(45) NULL,
+  weight_class VARCHAR(45) NULL,
+  left_image VARCHAR(250) NULL,
+  right_image VARCHAR(250) NULL,
+  reach VARCHAR(45) NULL,
+  weight VARCHAR(45) NULL,
+  height VARCHAR(45) NULL,
+  submission_avg VARCHAR(45) NULL,
+  avg_fight_time VARCHAR(45) NULL,
+  slpm VARCHAR(45) NULL,
+  takedown_avg VARCHAR(45) NULL,
+  sapm VARCHAR(45) NULL,
+  striking_defense VARCHAR(45) NULL,
+  takedown_accuracy VARCHAR(45) NULL,
+  takedown_defense VARCHAR(45) NULL,
+  kd_avg VARCHAR(45) NULL,
+  striking_accuracy VARCHAR(45) NULL,
+  PRIMARY KEY (id))
+
+CREATE TABLE events (
+  id VARCHAR(45) NOT NULL,
+  event_time DATETIME NULL,
+  base_title VARCHAR(45) NULL,
+  title_tag_line VARCHAR(45) NULL,
+  subtitle VARCHAR(45) NULL,
+  event_status VARCHAR(45) NULL,
+  last_modified VARCHAR(45) NULL,
+  url_name VARCHAR(120) NULL,
+  main_fighter_1 VARCHAR(45) NULL,
+  main_fighter_2 VARCHAR(45) NULL,
+  PRIMARY KEY (id))
+
+CREATE TABLE fights (
+  id VARCHAR(45) NOT NULL,
+  event_id VARCHAR(45) NOT NULL,
+  weight_class VARCHAR(45) NULL,
+  live_status_url VARCHAR(250) NULL,
+  winner VARCHAR(45) NULL,
+  fighter1_id VARCHAR(45) NULL,
+  fighter2_id VARCHAR(45) NULL,
+  ending_round VARCHAR(45) NULL,
+  result_method VARCHAR(45) NULL,
+  fighter1_image VARCHAR(250) NULL,
+  fighter2_image VARCHAR(250) NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT id2
+    FOREIGN KEY (event_id)
+    REFERENCES events(id))
+
+CREATE TABLE live_fight_data (
+  id INT NOT NULL IDENTITY(1,1),
+  fight_id VARCHAR(45) NOT NULL,
+  round VARCHAR(45) NULL,
+  fighter_id VARCHAR(45) NOT NULL,
+  knock_down_landed VARCHAR(45) NULL,
+  significant_strikes VARCHAR(45) NULL,
+  total_strikes VARCHAR(45) NULL,
+  punches VARCHAR(45) NULL,
+  kicks VARCHAR(45) NULL,
+  distance_strikes VARCHAR(45) NULL,
+  clinch_significant_strikes VARCHAR(45) NULL,
+  ground_significant_strikes VARCHAR(45) NULL,
+  clinch_total_strikes VARCHAR(45) NULL,
+  ground_total_strikes VARCHAR(45) NULL,
+  head_significant_strikes VARCHAR(45) NULL,
+  body_significant_strikes VARCHAR(45) NULL,
+  legs_significant_strikes VARCHAR(45) NULL,
+  head_total_strikes VARCHAR(45) NULL,
+  body_total_strikes VARCHAR(45) NULL,
+  legs_total_strikes VARCHAR(45) NULL,
+  distance_head_strikes VARCHAR(45) NULL,
+  distance_body_strikes VARCHAR(45) NULL,
+  distance_leg_strikes VARCHAR(45) NULL,
+  clinch_head_strikes VARCHAR(45) NULL,
+  clinch_body_strikes VARCHAR(45) NULL,
+  clinch_leg_strikes VARCHAR(45) NULL,
+  ground_head_strikes VARCHAR(45) NULL,
+  ground_body_strikes VARCHAR(45) NULL,
+  ground_leg_strikes VARCHAR(45) NULL,
+  distance_head_kicks VARCHAR(45) NULL,
+  distance_body_kicks VARCHAR(45) NULL,
+  distance_leg_kicks VARCHAR(45) NULL,
+  distance_head_punches VARCHAR(45) NULL,
+  distance_body_punches VARCHAR(45) NULL,
+  clinch_significant_kicks VARCHAR(45) NULL,
+  clinch_significant_punches VARCHAR(45) NULL,
+  ground_significant_kicks VARCHAR(45) NULL,
+  ground_significant_punches VARCHAR(45) NULL,
+  takedowns VARCHAR(45) NULL,
+  submissions VARCHAR(45) NULL,
+  reversals_landed VARCHAR(45) NULL,
+  standups_landed VARCHAR(45) NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT id3
+    FOREIGN KEY (fighter_id)
+    REFERENCES fighters(id),
+  CONSTRAINT id4
+    FOREIGN KEY (fight_id)
+    REFERENCES fights(id))
+
