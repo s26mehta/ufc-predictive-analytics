@@ -1,4 +1,3 @@
-var userId;
 $(document).ready(function() {
     function loginAjax() {
         let username = document.getElementById("username").value,
@@ -16,9 +15,9 @@ $(document).ready(function() {
                     console.log("Login succeeded");
                     window.sessionStorage.setItem("username", username);
                     window.sessionStorage.setItem("password", password);
+                    window.sessionStorage.setItem("userId", result['user_id']);
                     $(".modal").modal("hide");
                     $(document.getElementById("account").children).toggle();
-                    userId = result['user_id'];
                     document.getElementById("user").appendChild(document.createTextNode(result['first_name']));
                 }
                 else
@@ -26,6 +25,7 @@ $(document).ready(function() {
             },
             error:function(msg){
                 console.error(msg);
+                window.sessionStorage.clear();
             }
         });
     }
@@ -62,9 +62,9 @@ $(document).ready(function() {
                     console.log("Sign up succeeded");
                     window.sessionStorage.setItem("username", username);
                     window.sessionStorage.setItem("password", password);
+                    window.sessionStorage.setItem("userId", result['user_id']);
                     $(".modal").modal("hide");
                     $(document.getElementById("account").children).toggle();
-                    userId = result['user_id'];
                     document.getElementById("user").appendChild(document.createTextNode(firstName));
                     $(document.getElementsByClassName('login-required')).html("<h1 style='color:red;'>Login Required</h1>");
                 }
@@ -73,6 +73,7 @@ $(document).ready(function() {
             },
             error:function(msg){
                 console.error(msg);
+                window.sessionStorage.clear();
             }
         });
     });

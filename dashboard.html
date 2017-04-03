@@ -156,12 +156,14 @@
     let fighters;
     $.ajax({
         url:"http://127.0.0.1:5000/api/get_dashboard",
-        type:"GET",
+        type:"POST",
         dataType:"json",
-        data:{user_id:userId},
+        data:{user_id:window.sessionStorage.getItem("userId")},
         success:function(result){
-            fighters = result;
-            plot();
+            if (result['success']){
+                fighters = result;
+                plot();
+            }
         }
     });
 

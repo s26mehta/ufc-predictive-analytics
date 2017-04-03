@@ -107,16 +107,17 @@ def get_all_fighters():
     except:
         return jsonify(success=False)
 
-@app.route('/api/get_fighter', methods=['GET'])
+@app.route('/api/get_fighter', methods=['POST'])
 def get_fighter():
-    if not request.json:
+    print request.form
+    if not request.form:
         abort(400)
     try:
         cnxn = pyodbc.connect(
             'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
             ';PWD=' + password)
         cursor = cnxn.cursor()
-        cursor.execute("Select * from fighters where id=%s" % request.json['id'])
+        cursor.execute("Select * from fighters where id=%s" % request.form['id'])
         row = cursor.fetchone()
         res = []
         a = {
@@ -156,17 +157,18 @@ def get_fighter():
     except:
         return jsonify(success=False)
 
-@app.route('/api/get_dashboard', methods=['GET'])
+@app.route('/api/get_dashboard', methods=['POST'])
 def get_dashboard():
-    if not request.json:
+    if not request.form:
         abort(400)
     try:
         cnxn = pyodbc.connect(
             'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
             ';PWD=' + password)
         cursor = cnxn.cursor()
-        cursor.execute("Select * from dashboards where user_id=%s" % request.json['user_id'])
+        cursor.execute("Select * from dashboards where user_id='%s'" % request.form['user_id'])
         row1 = cursor.fetchone()
+        print 'here'
         print row1
         res = []
         a = {
@@ -218,22 +220,22 @@ def get_dashboard():
         return jsonify(success=False)
 
 
-@app.route('/api/dashboard/add_fighter', methods=['GET'])
+@app.route('/api/dashboard/add_fighter', methods=['POST'])
 def add_fighter():
-    if not request.json:
+    if not request.form:
         abort(400)
     try:
         cnxn = pyodbc.connect(
             'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
             ';PWD=' + password)
         cursor = cnxn.cursor()
-        cursor.execute("Select fighters from dashboards where user_id=%s" % request.json['user_id'])
+        cursor.execute("Select fighters from dashboards where user_id=%s" % request.form['user_id'])
         row = cursor.fetchone()
         old_fighters= row[0]
-        add_fighters = request.json['fighters'].split(",")
+        add_fighters = request.form['fighters'].split(",")
         for fighter in add_fighters:
             old_fighters = old_fighters + ", " + fighter
-        cursor.execute("Update dashboards set fighters = '%s' where user_id='%s'" % (old_fighters, request.json['user_id']))
+        cursor.execute("Update dashboards set fighters = '%s' where user_id='%s'" % (old_fighters, request.form['user_id']))
         cnxn.commit()
         cursor.close()
         cnxn.close()
@@ -241,9 +243,9 @@ def add_fighter():
     except:
         return jsonify(success=False)
 
-@app.route('/api/get_live_fight_data', methods=['GET'])
+@app.route('/api/get_live_fight_data', methods=['POST'])
 def live_fight_data():
-    if not request.json:
+    if not request.form:
         abort(400)
     try:
         cnxn = pyodbc.connect(
@@ -253,7 +255,7 @@ def live_fight_data():
         cursor.execute("Select fight_id, fighter_id, round, knock_down_landed, total_strikes, distance_strikes, clinch_total_strikes, "
                        "ground_total_strikes, head_total_strikes, body_total_strikes, legs_total_strikes, "
                        "takedowns, submissions, reversals_landed, standups_landed "
-                       "from live_fight_data where fight_id=%s" % request.json['fight_id'])
+                       "from live_fight_data where fight_id=%s" % request.form['fight_id'])
         row = cursor.fetchone()
         res = []
         while row:

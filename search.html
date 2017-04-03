@@ -22,30 +22,83 @@
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
-    function getFighterData(searchString) {
-        $.ajax({
-            type:"GET",
-            dataType:"json",
-            data:{"": searchString}
-            url:"http://127.0.0.1:5000/api/fighter_data"
-            success:function(result) {
-
-            }
-        })
-    }
     $(document).ready(function() {
-        let searchText = getParameterByName("search");
-        document.getElementById("search-text").value = searchText;
-        if(searchText) {
+        $.ajax({
+            url:"http://127.0.0.1:5000/api/get_all_fighters",
+            type:"POST",
+            dataType:"json",
+            success:function(result) {
+                if(!result['success']) {
+                    console.log("Could not load fighters.");
+                    return;
+                }
+                //result['response'];
+                const length = result['response'].length;
+                let fighterArray = [];
+                for (let i = 0; i < length; i++) {
+                    fighterArray[i] = {
+                        id: result['response'][i].id,
+                        text: result['response'][i].first_name + " " + result['response'][i].last_name
+                    };
+                }
+                fighterArray.sort(function(a,b){
+                    let nameA = a.text.toLowerCase(), nameB = b.text.toLowerCase();
+                    return nameA > nameB ? 1: -1;
+                });
 
-        }
-        $(document.getElementById("search")).on("click", function() {
-            document.getElementById("search-text").value;
+                // $("#search-select").select2({
+                //     data: fighterArray
+                // });
+                for(let index = 0; index < length; index++) {
+                    let option = document.createElement("option"), fighter = fighterArray[index];
+                    option.text = fighter.text;
+                    option.value = fighter.id;
+                    document.getElementById("search-select").appendChild(option);
+                }
+
+
+                let searchText = getParameterByName("search"), searchId = getParameterByName("id");
+                $(document.getElementById("search-select")).val(searchId);
+                $(document.getElementById("search")).on("click", function() {
+                    document.getElementById("search-select").value;
+                });
+            },
+            error:function(msg) {
+                console.error(msg);
+            }
         });
-        if (true) {//logged in
-            $(document.getElementById("account").children).toggle();
-            let firstName = "";
-            document.getElementById("user").appendChild(document.createTextNode(firstName));
+
+        $(document.getElementById("search-select")).on("change", function(){
+            let $option = $(this).find(":selected");
+            $.ajax({
+                url:"http://127.0.0.1:5000/api/get_fighter",
+                type:"POST",
+                dataType:"json",
+                data:{id:$option.val()},
+                success:function(result){
+                    if(result['success']){
+                        const fighter = result['response'][0];
+                        console.log(fighter);
+
+                        let searchResults = d3.select("#search-results");
+
+                        document.getElementById("image").setAttribute("src", fighter.left_image);
+                        document.getElementById("stats");
+                        //
+                        // searchResults.append("div")
+                        //     .style("float", "left")
+                        //     .style("width", "20%");
+                        // searchResults.append("div")
+                        //     .style("margin-left", "20%")
+                        //     .style("width", "80%")
+                        //         .append("img")
+                        //         .attr("src", fighter.left_image!=null ? fighter.left_image : "images/Default_Left.png")
+                        //         .style("width", "0 auto")
+                        //         .style("height", "300px");
+                    }
+                }
+            });
+        });
 
             //Get data
             // $.ajax({
@@ -58,25 +111,7 @@
             //     }
             // });
 
-            let searchResults = d3.select("#search-results");
-            length = 1;
-            for(let index = 0; index < length; index++) {
-                //obj[index]
-                searchResults.append("div")
-                    .style("float", "left")
-                    .style("width", "200px");
-                searchResults.append("div")
-                    .style("margin-left", "200px")
-                    .style("width", "200px");
-            }
-        }
     });
-
-    // $.getJSON("http://ufc-data-api.ufc.com/api/v3/iphone/fighters", function(data) {
-    //     var ufcData = JSON.parse(data);
-    //
-    //     console.log(ufcData.length);
-    // });
 
     </script>
 </head>
@@ -188,14 +223,21 @@
         <div class="row jumbotron">
             <div style="margin-left:20%;margin-right:20%;">
                 <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search..." id="search-text">
+                    <select class="form-control" id="search-select"></select>
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" id="search">Go</button>
+                        <button class="btn btn-default" type="button" id="search-button">Go</button>
                     </span>
                 </div>
             </div>
         </div>
-        <div class="row" id="search-results"></div>
+        <div class="row" id="search-results" style="width:100%;height:500px;">
+            <div style="float:left;width:30%;height:100%;">
+                <img id="image" src="images/Default_Left.png" style="float:right;height:100%;">
+            </div>
+            <div style="margin-left:30%;width:70%;">
+                <ul id="stats"></ul>
+            </div>
+        </div>
     </div>
 </body>
 </html>
