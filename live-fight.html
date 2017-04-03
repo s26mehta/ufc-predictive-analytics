@@ -19,47 +19,146 @@
         }
     </style>
     <script>
-    $(document).ready(function() {
-        let f1Percent = 40, f2Percent = 100-f1Percent;
+    $(document).ready(
+        function hello() {
+        var fight_id = '286539'
 
-        const height = 400;
-        const barGraph = d3.select("#bar-graph")
-            .append("svg")
-            .attr("width", "100%")
-            .attr("height", height);
+        $.ajax({
+            url:"http://127.0.0.1:5000/api/get_live_fight_data",
+            type:"POST",
+            dataType:"json",
+            data:{fight_id:fight_id},
+            success:function(result) {
+                if(!result['success']) {
+                    console.log("Could not load live_data.");
+                    return;
+                }
+                console.log(result)
+                var fighter1 = result['fighters'][0].fighter1_id
+                var fighter2 = result['fighters'][0]['fighter2_id']
 
-        barGraph.append("line")
-            .attr("x1", "0")
-            .attr("x2", "100%")
-            .attr("y1", "100%")
-            .attr("y2", "100%")
-            .style("stroke", "#000");
+                const length = result['response'].length;
 
-        barGraph.append("rect")
-            .attr("x", "20%")
-            .attr("y", f2Percent+"%")
-            .attr("width", "20%")
-            .attr("height", f1Percent+"%");
-        barGraph.append("text")
-            .attr("x", "30%")
-            .attr("y", f2Percent+f1Percent/2+"%")
-            .text(f1Percent+"%")
-            .attr("text-anchor", "middle")
-            .attr("dominant-baseline", "central")
-            .attr("fill", "#fff");
+                var live_data_array = [];
+                for (var i = 0; i < length; i++) {
+                    live_data_array[i] = {
+                        id: result['response'][i].fighter_id,
+                        round: result['response'][i].round,
+                        knock_down: result['response'][i].knock_down,
+                        total_strikes: result['response'][i].total_strikes,
+                        distance_total_strikes: result['response'][i].distance_total_strikes,
+                        clinch_total_strikes: result['response'][i].clinch_total_strikes,
+                        ground_total_strikes: result['response'][i].ground_total_strikes,
+                        head_total_strikes: result['response'][i].head_total_strikes,
+                        body_total_strikes: result['response'][i].body_total_strikes,
+                        takedowns: result['response'][i].takedowns,
+                        submissions: result['response'][i].submissions,
+                        reversals_landed: result['response'][i].reversals_landed,
+                        standups_landed: result['response'][i].standups_landed
+                    };
 
-        barGraph.append("rect")
-            .attr("x", "60%")
-            .attr("y", f1Percent+"%")
-            .attr("width", "20%")
-            .attr("height", f2Percent+"%");
-        barGraph.append("text")
-            .attr("x", "70%")
-            .attr("y", f1Percent+f2Percent/2+"%")
-            .text(f2Percent+"%")
-            .attr("text-anchor", "middle")
-            .attr("dominant-baseline", "central")
-            .attr("fill", "#fff");
+                    if (result['response'][i].fighter_id == fighter1 && result['response'][i].round == '1') {
+                        kd = document.getElementById("knockdown");
+                        $(kd).find("td")[0].innerHTML = result['response'][i].knock_down;
+
+                        ts = document.getElementById("total_strikes");
+                        res = result['response'][i].total_strikes.split(':');
+                        $(ts).find("td")[0].innerHTML = res[0];
+                        $(ts).find("td")[1].innerHTML = res[1];
+
+                        dts = document.getElementById("distance_total_strikes");
+                        res = result['response'][i].distance_total_strikes.split(':');
+                        $(dts).find("td")[0].innerHTML = res[0];
+                        $(dts).find("td")[1].innerHTML = res[1];
+
+                        cts = document.getElementById("clinch_total_strikes");
+                        res = result['response'][i].clinch_total_strikes.split(':');
+                        $(cts).find("td")[0].innerHTML = res[0];
+                        $(cts).find("td")[1].innerHTML = res[1];
+
+                        hts = document.getElementById("head_total_strikes");
+                        res = result['response'][i].head_total_strikes.split(':');
+                        $(hts).find("td")[0].innerHTML = res[0];
+                        $(hts).find("td")[1].innerHTML = res[1];
+
+                        bts = document.getElementById("body_total_strikes");
+                        res = result['response'][i].body_total_strikes.split(':');
+                        $(bts).find("td")[0].innerHTML = res[0];
+                        $(bts).find("td")[1].innerHTML = res[1];
+
+                        lts = document.getElementById("legs_total_strikes");
+                        res = result['response'][i].legs_total_strikes.split(':');
+                        $(lts).find("td")[0].innerHTML = res[0];
+                        $(lts).find("td")[1].innerHTML = res[1];
+
+                        td = document.getElementById("takedowns");
+                        $(td).find("td")[0].innerHTML = result['response'][i].takedowns;
+
+                        sub = document.getElementById("submissions");
+                        $(sub).find("td")[0].innerHTML = result['response'][i].submissions;
+                        
+                        rl = document.getElementById("reversals");
+                        $(rl).find("td")[0].innerHTML = result['response'][i].reversals_landed;
+                        
+                        sl = document.getElementById("standups");
+                        $(sl).find("td")[0].innerHTML = result['response'][i].standups_landed;
+
+                    }
+                    if (result['response'][i].fighter_id == fighter2 && result['response'][i].round == '1') {
+                        kd = document.getElementById("knockdown2");
+                        $(kd).find("td")[0].innerHTML = result['response'][i].knock_down;
+
+                        ts = document.getElementById("total_strikes2");
+                        res = result['response'][i].total_strikes.split(':');
+                        $(ts).find("td")[0].innerHTML = res[0];
+                        $(ts).find("td")[1].innerHTML = res[1];
+
+                        dts = document.getElementById("distance_total_strikes2");
+                        res = result['response'][i].distance_total_strikes.split(':');
+                        $(dts).find("td")[0].innerHTML = res[0];
+                        $(dts).find("td")[1].innerHTML = res[1];
+
+                        cts = document.getElementById("clinch_total_strikes2");
+                        res = result['response'][i].clinch_total_strikes.split(':');
+                        $(cts).find("td")[0].innerHTML = res[0];
+                        $(cts).find("td")[1].innerHTML = res[1];
+
+                        hts = document.getElementById("head_total_strikes2");
+                        res = result['response'][i].head_total_strikes.split(':');
+                        $(hts).find("td")[0].innerHTML = res[0];
+                        $(hts).find("td")[1].innerHTML = res[1];
+
+                        bts = document.getElementById("body_total_strikes2");
+                        res = result['response'][i].body_total_strikes.split(':');
+                        $(bts).find("td")[0].innerHTML = res[0];
+                        $(bts).find("td")[1].innerHTML = res[1];
+
+                        lts = document.getElementById("legs_total_strikes2");
+                        res = result['response'][i].legs_total_strikes.split(':');
+                        $(lts).find("td")[0].innerHTML = res[0];
+                        $(lts).find("td")[1].innerHTML = res[1];
+
+                        td = document.getElementById("takedowns2");
+                        $(td).find("td")[0].innerHTML = result['response'][i].takedowns;
+
+                        sub = document.getElementById("submissions2");
+                        $(sub).find("td")[0].innerHTML = result['response'][i].submissions;
+
+                        rl = document.getElementById("reversals2");
+                        $(rl).find("td")[0].innerHTML = result['response'][i].reversals_landed;
+                        
+                        sl = document.getElementById("standups2");
+                        $(sl).find("td")[0].innerHTML = result['response'][i].standups_landed;
+                    }
+                }
+                console.log('hello');
+                setTimeout(hello, 5000);
+            },
+            error:function(msg) {
+                console.error(msg);
+            }
+        });
+
     });
     </script>
 </head>
@@ -173,16 +272,20 @@
         </div>
         <div style="height:100%;">
             <div style="float:left;width:15%;height:100%;">
+
                 <div id="fighter-1" style="height:95%">
-                    <img src="images/Daniel-Cormier_left.png" style="width:100%;height:100%;object-fit:cover;">
+                    <img src="http://imagec.ufc.com/http%253A%252F%252Fmedia.ufc.tv%252F%252Ffighter_images%252FArnold_Allen%252FALLEN_ARNOLD_L.png?mh530" style="width:100%;height:100%;object-fit:cover;">
                 </div>
-                <p>CORMIER</p>
+                <br>
+                <p style='font-size:20px;'>ALLEN ARNOLD</p>
+
             </div>
             <div style="height:100%;width:15%;float:right;">
                 <div id="fighter-2" style="height:95%">
-                    <img src="images/Anthony-Johnson_right.png" style="width:100%;height:100%;object-fit:cover;">
+                    <img src="http://imagec.ufc.com/http%253A%252F%252Fmedia.ufc.tv%252F%252Ffighter_images%252FMakwan_Amirkhani%252FAMIRKHANI_MAKWAN_R.png?mh530" style="width:100%;height:100%;object-fit:cover;">
                 </div>
-                <p>JOHNSON</p>
+                <br>
+                <p style='font-size:20px;'>Makwan Amirkhani</p>
             </div>
             <div>
                 <p>Knockdown</p>
@@ -352,7 +455,7 @@
                 </div>
                 <br>
                 <p>Head Total Strikes</p>
-                <div style="margin-left:30%;width:10%; display: inline-block;">
+                <div style="margin-left:15%;width:10%; display: inline-block;">
                     <table class="table table-condensed" style="width:100%;">
                         <thead>
                             <tr>
@@ -410,7 +513,7 @@
                                 <th>Landed</th>
                             </tr>
                         </thead>
-                        <tbody id="body_total_strikes">
+                        <tbody id="body_total_strikes2">
                             <tr>
                                 <td>0</td>
                                 <td>0</td>
@@ -512,6 +615,35 @@
                         </tbody>
                     </table>
                 </div><br>
+                <p>Reversals</p><br>
+                <div style="margin-left:33%;width:10%; display: inline-block;">
+                    <table class="table table-condensed" style="width:50%;">
+                        <thead>
+                            <tr>
+                                <th>Landed</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reversals">
+                            <tr>
+                                <td>0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-left:20%;width:10%; display: inline-block;">
+                    <table class="table table-condensed" style="width:50%;">
+                        <thead>
+                            <tr>
+                                <th>Landed</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reversals2">
+                            <tr>
+                                <td>0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <p>Standups</p><br>
                 <div style="margin-left:33%;width:10%; display: inline-block;">
                     <table class="table table-condensed" style="width:50%;">
