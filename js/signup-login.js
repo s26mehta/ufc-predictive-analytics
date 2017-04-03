@@ -67,6 +67,7 @@ $(document).ready(function() {
                     $(document.getElementById("account").children).toggle();
                     document.getElementById("user").appendChild(document.createTextNode(firstName));
                     $(document.getElementsByClassName('login-required')).html("<h1 style='color:red;'>Login Required</h1>");
+                    location.href = "dashboard.html";
                 }
                 else
                     console.log("Sign up failed");
@@ -80,6 +81,6 @@ $(document).ready(function() {
 
     $(document.getElementById("logout")).on("click", function() {
         window.sessionStorage.clear();
-        location.reload();
+        location.href = "index.html";
     });
 });
