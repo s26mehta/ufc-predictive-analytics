@@ -9,7 +9,7 @@ server = 'ufcserve.database.windows.net'
 database = 'ufcDB'
 username = 's26mehta'
 password = 'Syde223@'
-driver = '{SQL Server}'
+driver = '{ODBC Driver 13 for SQL Server}'
 
 @app.route('/api/sign_up', methods=['POST'])
 def sign_up():
@@ -107,12 +107,14 @@ def get_all_fighters():
     except:
         return jsonify(success=False)
 
-@app.route('/api/get_fighter', methods=['POST'])
+
+@app.route('/api/get_fighter', methods=['POST', 'GET'])
 def get_fighter():
     print request.form
     if not request.form:
         abort(400)
     try:
+        print 'here'
         cnxn = pyodbc.connect(
             'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
             ';PWD=' + password)
@@ -249,8 +251,9 @@ def add_fighter():
     except:
         return jsonify(success=False)
 
+
 @app.route('/api/get_live_fight_data', methods=['POST'])
-def live_fight_data():
+def get_live_fight_data():
     if not request.form:
         abort(400)
     try:
@@ -258,6 +261,17 @@ def live_fight_data():
             'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
             ';PWD=' + password)
         cursor = cnxn.cursor()
+
+        cursor.execute(
+            "Select fighter1_id, fighter2_id from fights where id=%s" % request.form['fight_id'])
+        row1 = cursor.fetchone()
+        fighters = []
+        b = {
+            'fighter1_id': row1[0],
+            'fighter2_id': row1[1]
+        }
+        fighters.append(b)
+
         cursor.execute("Select fight_id, fighter_id, round, knock_down_landed, total_strikes, distance_strikes, clinch_total_strikes, "
                        "ground_total_strikes, head_total_strikes, body_total_strikes, legs_total_strikes, "
                        "takedowns, submissions, reversals_landed, standups_landed "
@@ -289,7 +303,8 @@ def live_fight_data():
         cursor.close()
         cnxn.close()
         return jsonify(success=True,
-                       response = res)
+                       response = res,
+                       fighters = fighters)
     except:
         return jsonify(success=False)
 

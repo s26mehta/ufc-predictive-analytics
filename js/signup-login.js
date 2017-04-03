@@ -19,6 +19,7 @@ $(document).ready(function() {
                     $(".modal").modal("hide");
                     $(document.getElementById("account").children).toggle();
                     document.getElementById("user").appendChild(document.createTextNode(result['first_name']));
+                    $("#add-fighter").css('visibility', 'visible');
                 }
                 else
                     console.log("Login failed");
