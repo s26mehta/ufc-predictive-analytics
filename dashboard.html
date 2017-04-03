@@ -94,14 +94,14 @@
                 </a>
             </div>
             <ul class="nav navbar-nav">
-                <li class="active"><a href="index.html">Home</a></li>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="search.html">Search</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right" id="account">
                 <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
                 <li><a href="#" data-toggle="modal" data-target="#signup">Sign Up</a></li>
                 <li style="display: none;"><a href="live-fight.html">Live Fight</a></li>
-                <li style="display: none;"><a href="dashboard.html">Dashboard</a></li>
+                <li class="active" style="display: none;"><a href="dashboard.html">Dashboard</a></li>
                 <li style="display: none;">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                         <span id="user">Welcome, </span><span class="caret"></span>
@@ -160,10 +160,17 @@
         dataType:"json",
         data:{user_id:window.sessionStorage.getItem("userId")},
         success:function(result){
-            if (result['success']){
-                fighters = result;
-                plot();
+            if (!result['success']){
+                console.log("Dashboard data not found.");
+                return;
             }
+            console.log("Dashboard data acquired.");
+            console.log(result.fighters);
+            fighters = result.fighters;
+            plot();
+        },
+        error:function(msg){
+            console.error(msg);
         }
     });
 
@@ -180,10 +187,10 @@
 
         const length = fighters.length;
 
-        const padding = 25;
+        const padding = 25;//bottom
         const height = divHeight-padding;
-        const width = divWidth-padding;
-        const x0 = padding;
+        const width = divWidth-3;
+        const x0 = 3;
         const y0 = divHeight-padding;
 
         for (let index = 0; index < 4; index++) {
@@ -210,11 +217,13 @@
         for (let index = 0; index < length; index++) {
             const fighter = fightersFollowed[index];
 
-            thumbnails.append("div")
+            let thumbnail = thumbnails.append("div")
                 .attr("class", "thumbnail fighter-"+(index))
-                .style("border-color", (fighter.colour))
-                    .append("img")
-                    .attr("src", "http://127.0.0.1:5000/api/get_all_fighters/"+fighters[index].profile_image);
+                .style("border-color", (fighter.colour));
+            thumbnail.append("img")
+                .attr("src", fighters[index].profile_image);
+            thumbnail.append("p")
+                .text(fighters[index].first_name+" "+fighters[index].last_name)
 
             graph.append("polyline")
                 .attr("points", function () {

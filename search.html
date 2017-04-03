@@ -88,21 +88,21 @@
                         addRow(statsNode, "Status", fighter.fighter_status.replace(/([a-z])([A-Z])/g, '$1 $2'));
                         addRow(statsNode, "Height", fighter.height + " in");
                         addRow(statsNode, "Weight", fighter.weight + " lb");
-                        addRow(statsNode, "Weight class", fighter.weight_class.replace("_", " "));
+                        addRow(statsNode, "Weightclass", fighter.weight_class.replace("_", " "));
                         let record = fighter.record.split("-");
                         addRow(statsNode, "Record", record[0].replace(/none/i, "0") + " wins, " + record[1].replace(/none/i, "0") + " losses, " + record[2].replace(/none/i, "0") + " draws");
                         addRow(statsNode, "Rank", fighter.rank.replace("null", 0));
                         addRow(statsNode, "Reach", fighter.reach);
-                        addRow(statsNode, "Striking accuracy", fighter.striking_accuracy);
-                        addRow(statsNode, "Striking defense", fighter.striking_defense);
-                        addRow(statsNode, "Submission average", fighter.submission_avg);
-                        addRow(statsNode, "Takedown accuracy", fighter.takedown_accuracy);
-                        addRow(statsNode, "Takedown defense", fighter.takedown_defense);
-                        addRow(statsNode, "Takedown average", fighter.takedown_avg);
-                        addRow(statsNode, "Average fight time", fighter.avg_fight_time);
-                        //kd_avg
-                        //sapm
-                        //slpm
+                        addRow(statsNode, "Striking Accuracy", fighter.striking_accuracy);
+                        addRow(statsNode, "Striking Defense", fighter.striking_defense);
+                        addRow(statsNode, "Submission Average", fighter.submission_avg);
+                        addRow(statsNode, "Takedown Accuracy", fighter.takedown_accuracy);
+                        addRow(statsNode, "Takedown Defense", fighter.takedown_defense);
+                        addRow(statsNode, "Takedown Average", fighter.takedown_avg);
+                        addRow(statsNode, "Average Fight Time", fighter.avg_fight_time);
+                        addRow(statsNode, "Kickdown Average", fighter.kd_avg);
+                        addRow(statsNode, "Strikes Attempted Per Minute", fighter.sapm);
+                        addRow(statsNode, "Strikes Landed Per Minute", fighter.slpm);
                     }
                 }
             });

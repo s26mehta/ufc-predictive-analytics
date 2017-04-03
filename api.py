@@ -159,6 +159,8 @@ def get_fighter():
 
 @app.route('/api/get_dashboard', methods=['POST'])
 def get_dashboard():
+    print request.form
+    print request.json
     if not request.form:
         abort(400)
     try:
@@ -169,6 +171,7 @@ def get_dashboard():
         cursor.execute("Select * from dashboards where user_id='%s'" % request.form['user_id'])
         row1 = cursor.fetchone()
         print 'here'
+
         print row1
         res = []
         a = {
@@ -178,10 +181,13 @@ def get_dashboard():
         }
         res.append(a)
         all_fighters_id = a['fighters'].split(",")
+        print all_fighters_id
         fighters = []
-        for fighter in fighters:
+        for fighter in all_fighters_id:
             cursor.execute("Select * from fighters where id=%s" % fighter)
             row = cursor.fetchone()
+            print 'here'
+            print row
             x = {
                 'id': row[0],
                 'first_name': row[1],
@@ -215,7 +221,7 @@ def get_dashboard():
         cnxn.close()
         return jsonify(success=True,
                        dasboard = res,
-                       fighters=fighters)
+                       fighters = fighters)
     except:
         return jsonify(success=False)
 
