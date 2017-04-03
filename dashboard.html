@@ -125,8 +125,8 @@
         const numberOfPoints = properties.length;
         const length = fighters.length;
 
-        const paddingBot = 25;//bottom
-        const paddingLR = 5;
+        const paddingBot = 40;//bottom
+        const paddingLR = 30;
         const height = divHeight-paddingBot;
         const width = divWidth;
         // const
@@ -138,86 +138,69 @@
             .attr("width", "100%")
             .attr("height", "100%");
 
-        graph.append("polyline")
-            .attr("points", (x0)+","+(y0)+" "+(divWidth)+","+(y0))
-            .attr("vector-effect", "non-scaling-stroke")
-            .style("stroke", "#000")
-            .style("stroke-width", "3px")
-            .style("fill", "none");
-
         for (let i = 0; i < numberOfPoints; i++){
             let maxValue = 0,
                 xGroup = width/numberOfPoints,
                 dx = (xGroup-paddingLR*2)/length;
+
+            graph.append("text")
+                .attr("x", xGroup*i+xGroup/2)
+                .attr("y", height+paddingBot/2)
+                .text($("#select").find("option[value='"+properties[i]+"']").text())
+                .style("font", "1.3em bold")
+                .attr("text-anchor", "middle")
+                .attr("dominant-baseline", "central")
+                .attr("fill", "#000");
+            let value = [];
             for (let index = 0; index < length; index++) {
-                let value = fighters[index][properties[i]];
-                console.log(value);
-                if(!value){
-                    value = 0;
+                value[index] = fighters[index][properties[i]];
+                if (properties[i] == "avg_fight_time" && value[index].match(/:/)) {
+                    let time = value[index].split(":");
+                    let hours = parseFloat(time[0]);
+                    let mins = parseFloat(time[1]);
+                    value[index] = hours*60+mins;
                 }
-                else {
-                    value = value.match(/\d+\.\d+/);
+                if (properties[i] == "record" && value[index].match(/-/)) {
+                    let record = value[index].split("-");
+                    let wins = record1[0].replace(/none/i, "0");
+                    let losses = record1[1].replace(/none/i, "0");
+                    let draws = record1[2].replace(/none/i, "0");
+                    value[index] = parseFloat(wins)/(parseFloat(wins)+parseFloat(losses)+parseFloat(draws));
+                }
+                value[index] = parseFloat(value[index]);
+                if (!value[index]) {
+                    value[index] = 0;
+                }
 
-                    if (value == null) {
-                        value = 0;
-                    }
-                    else {
-                        value = value[0];
-                    }
+                if (value[index] > maxValue) {
+                    maxValue = value[index];
                 }
-                // console.log(value);
-
-                if (value > maxValue) {
-                    maxValue = value;
-                }
-                fighters[index][properties[i]]=value;
             }
             for (let index = 0; index < length; index++) {
-                let fighter = fighters[index],
-                    value = fighter[properties[i]];
+                let fighter = fighters[index];
 
                 let xGroupStart = xGroup*i+paddingLR,
-                    y = height*(1-value/maxValue);
-                console.log(height*(1-value/maxValue));
+                    y = height*(1-value[index]/maxValue);
+                //console.log(height*(1-value[index]/maxValue));
                 graph.append("rect")
                     .attr("x", xGroupStart+index*dx)
                     .attr("y", y)
                     .attr("width", dx)
                     .attr("height", height-y)
                     .style("fill", fighter.colour);
+
+                if(value[index]) {
+                    graph.append("text")
+                        .attr("x", xGroupStart+index*dx+dx/2)
+                        .attr("y", y+(height-y)/2)
+                        .text(value[index])
+                        .attr("class", "outline")
+                        .attr("text-anchor", "middle")
+                        .attr("dominant-baseline", "central")
+                        .attr("fill", "#fff");
+                }
             }
-
-        // graph.append("polyline")
-        //     .attr("points", function () {
-        //         let str = (x0)+","+(fighter.values[0]);
-        //         for (let i = 1; i < numberOfPoints; i++) {
-        //             str += " "+(x0+i*width/(numberOfPoints-1))+","+(fighter.values[i]);
-        //         }
-        //         return str;
-        //     })
-        //     .attr("class", "fighter-"+(index))
-        //     .style("stroke", (fighter.colour));
         }
-    }
-    /*function rePlot() {
-        d3.selectAll("#graph svg").remove();
-
-        let computedDiv = window.getComputedStyle(document.getElementById("graph"), null);
-        let divWidth = parseInt(computedDiv.width);
-        let divHeight = parseInt(computedDiv.height);
-
-        const length = fighters.length;
-
-        const padding = 25;
-        const height = divHeight-padding;
-        const width = divWidth;
-        const x0 = 0;
-        const y0 = divHeight-padding;
-
-        const graph = d3.select("#graph")
-            .append("svg")
-            .attr("width", "100%")
-            .attr("height", "100%");
 
         graph.append("polyline")
             .attr("points", (x0)+","+(y0)+" "+(divWidth)+","+(y0))
@@ -225,23 +208,7 @@
             .style("stroke", "#000")
             .style("stroke-width", "3px")
             .style("fill", "none");
-
-        // for (let i = 0; i < )
-        for (let index = 0; index < length; index++) {
-            const fighter = fighters[index];
-
-            graph.append("polyline")
-                .attr("points", function () {
-                    let str = (x0)+","+(fighter.values[0]);
-                    for (let i = 1; i < numberOfPoints; i++) {
-                        str += " "+(x0+i*width/(numberOfPoints-1))+","+(fighter.values[i]);
-                    }
-                    return str;
-                })
-                .attr("class", "fighter-"+(index))
-                .style("stroke", (fighter.colour));
-        }
-    }*/
+    }
     function sort(arr) {
         return arr.concat().sort(subtract1);
     }
@@ -259,6 +226,16 @@
     }
     function randomNumber(maxValue) {
         return Math.floor(Math.random()*maxValue);
+    }
+    function clone(obj){
+        if(obj == null || typeof(obj) != 'object')
+            return obj;
+
+        var temp = new obj.constructor();
+        for(var key in obj)
+            temp[key] = clone(obj[key]);
+
+        return temp;
     }
     </script>
 </head>
