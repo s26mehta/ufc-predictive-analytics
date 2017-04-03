@@ -77,7 +77,7 @@
                     if(result['success']){
                         const fighter = result['response'][0];
                         console.log(fighter);
-                        document.getElementById("image").setAttribute("src", fighter.left_image);
+                        document.getElementById("image").setAttribute("src", (fighter.left_image!="null"?fighter.left_image:"images/Default_Left.png"));
 
                         let statsNode = document.getElementById("stats");
                         while (statsNode.firstChild) {
