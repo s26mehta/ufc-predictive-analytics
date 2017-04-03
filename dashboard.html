@@ -162,9 +162,9 @@
                 }
                 if (properties[i] == "record" && value[index].match(/-/)) {
                     let record = value[index].split("-");
-                    let wins = record1[0].replace(/none/i, "0");
-                    let losses = record1[1].replace(/none/i, "0");
-                    let draws = record1[2].replace(/none/i, "0");
+                    let wins = record[0].replace(/none/i, "0");
+                    let losses = record[1].replace(/none/i, "0");
+                    let draws = record[2].replace(/none/i, "0");
                     value[index] = parseFloat(wins)/(parseFloat(wins)+parseFloat(losses)+parseFloat(draws));
                 }
                 value[index] = parseFloat(value[index]);
