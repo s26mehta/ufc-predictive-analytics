@@ -32,7 +32,6 @@
                     console.log("Could not load fighters.");
                     return;
                 }
-                //result['response'];
                 const length = result['response'].length;
                 let fighterArray = [];
                 for (let i = 0; i < length; i++) {
@@ -46,9 +45,6 @@
                     return nameA > nameB ? 1: -1;
                 });
 
-                // $("#search-select").select2({
-                //     data: fighterArray
-                // });
                 for(let index = 0; index < length; index++) {
                     let option = document.createElement("option"), fighter = fighterArray[index];
                     option.text = fighter.text;
@@ -56,12 +52,11 @@
                     document.getElementById("search-select").appendChild(option);
                 }
 
-
-                let searchText = getParameterByName("search"), searchId = getParameterByName("id");
-                $(document.getElementById("search-select")).val(searchId);
-                $(document.getElementById("search")).on("click", function() {
-                    document.getElementById("search-select").value;
-                });
+                let searchId = getParameterByName("id");
+                if(searchId) {
+                    $(document.getElementById("search-select")).val(searchId);
+                    populate(searchId);
+                }
             },
             error:function(msg) {
                 console.error(msg);
@@ -69,19 +64,19 @@
         });
 
         $(document.getElementById("search-select")).on("change", function(){
-            let $option = $(this).find(":selected");
+            populate($(this).find(":selected").val());
+        });
+
+        function populate(fighterId){
             $.ajax({
                 url:"http://127.0.0.1:5000/api/get_fighter",
                 type:"POST",
                 dataType:"json",
-                data:{id:$option.val()},
+                data:{id:fighterId},
                 success:function(result){
                     if(result['success']){
                         const fighter = result['response'][0];
                         console.log(fighter);
-
-                        let searchResults = d3.select("#search-results");
-
                         document.getElementById("image").setAttribute("src", fighter.left_image);
 
                         let statsNode = document.getElementById("stats");
@@ -89,38 +84,31 @@
                             statsNode.removeChild(statsNode.firstChild);
                         }
                         addRow(statsNode, "Name", fighter.first_name + " " + fighter.last_name);
-                        addRow(statsNode, "Nickname", (fighter.nickname!='null'?fighter.nickname:'None'));
+                        addRow(statsNode, "Nickname", fighter.nickname.replace(/null|none/i, ""));
+                        addRow(statsNode, "Status", fighter.fighter_status.replace(/([a-z])([A-Z])/g, '$1 $2'));
                         addRow(statsNode, "Height", fighter.height + " in");
                         addRow(statsNode, "Weight", fighter.weight + " lb");
-                        addRow(statsNode, "Weight class", fighter.weight_class);
-                        //
-                        // searchResults.append("div")
-                        //     .style("float", "left")
-                        //     .style("width", "20%");
-                        // searchResults.append("div")
-                        //     .style("margin-left", "20%")
-                        //     .style("width", "80%")
-                        //         .append("img")
-                        //         .attr("src", fighter.left_image!=null ? fighter.left_image : "images/Default_Left.png")
-                        //         .style("width", "0 auto")
-                        //         .style("height", "300px");
+                        addRow(statsNode, "Weight class", fighter.weight_class.replace("_", " "));
+                        let record = fighter.record.split("-");
+                        addRow(statsNode, "Record", record[0].replace(/none/i, "0") + " wins, " + record[1].replace(/none/i, "0") + " losses, " + record[2].replace(/none/i, "0") + " draws");
+                        addRow(statsNode, "Rank", fighter.rank.replace("null", 0));
+                        addRow(statsNode, "Reach", fighter.reach);
+                        addRow(statsNode, "Striking accuracy", fighter.striking_accuracy);
+                        addRow(statsNode, "Striking defense", fighter.striking_defense);
+                        addRow(statsNode, "Submission average", fighter.submission_avg);
+                        addRow(statsNode, "Takedown accuracy", fighter.takedown_accuracy);
+                        addRow(statsNode, "Takedown defense", fighter.takedown_defense);
+                        addRow(statsNode, "Takedown average", fighter.takedown_avg);
+                        addRow(statsNode, "Average fight time", fighter.avg_fight_time);
+                        //kd_avg
+                        //sapm
+                        //slpm
                     }
                 }
             });
-        });
-
-            //Get data
-            // $.ajax({
-            //     type:"GET",
-            //     dataType:"jsonp",
-            //     contentType:false,
-            //     url:"http://ufc-data-api.ufc.com/api/v3/fighters",
-            //     success:function(result) {
-            //         console.log("here");
-            //     }
-            // });
-
+        }
     });
+
     function appendNode(parentNode, childString, text) {
         let node = document.createElement(childString);
         if(text)
@@ -223,8 +211,8 @@
                 </a>
             </div>
             <ul class="nav navbar-nav">
-                <li class="active"><a href="index.html">Home</a></li>
-                <li><a href="search.html">Search</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li class="active"><a href="search.html">Search</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right" id="account">
                 <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
@@ -246,12 +234,7 @@
     <div class="container-fluid">
         <div class="row jumbotron">
             <div style="margin-left:20%;margin-right:20%;">
-                <div class="input-group">
-                    <select class="form-control" id="search-select"></select>
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" id="search-button">Go</button>
-                    </span>
-                </div>
+                <select class="form-control" id="search-select"></select>
             </div>
         </div>
         <div class="row" id="search-results" style="width:100%;height:500px;">
@@ -259,7 +242,7 @@
                 <img id="image" src="images/Default_Left.png" style="float:right;height:100%;">
             </div>
             <div style="margin-left:40%;width:60%;">
-                <table class="table" style="width:100%;">
+                <table class="table table-condensed" style="width:100%;">
                     <thead>
                         <tr>
                             <th>Attribute</th>

@@ -13,7 +13,7 @@
     <script>
         $(document).on("click", "#search-button", function() {
             let $searchBox = $(document.getElementById("search-select")).find(":selected");
-            window.location.href="search.html?search="+$searchBox.text()+"&id="+$searchBox.val();
+            window.location.href="search.html?id="+$searchBox.val();
         });
         $.ajax({
             url:"http://127.0.0.1:5000/api/get_all_fighters",
