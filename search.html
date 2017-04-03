@@ -83,7 +83,16 @@
                         let searchResults = d3.select("#search-results");
 
                         document.getElementById("image").setAttribute("src", fighter.left_image);
-                        document.getElementById("stats");
+
+                        let statsNode = document.getElementById("stats");
+                        while (statsNode.firstChild) {
+                            statsNode.removeChild(statsNode.firstChild);
+                        }
+                        addRow(statsNode, "Name", fighter.first_name + " " + fighter.last_name);
+                        addRow(statsNode, "Nickname", (fighter.nickname!='null'?fighter.nickname:'None'));
+                        addRow(statsNode, "Height", fighter.height + " in");
+                        addRow(statsNode, "Weight", fighter.weight + " lb");
+                        addRow(statsNode, "Weight class", fighter.weight_class);
                         //
                         // searchResults.append("div")
                         //     .style("float", "left")
@@ -112,7 +121,22 @@
             // });
 
     });
-
+    function appendNode(parentNode, childString, text) {
+        let node = document.createElement(childString);
+        if(text)
+            node.appendChild(document.createTextNode(text));
+        parentNode.appendChild(node);
+    }
+    function addRow(tbody, col1Text, col2Text) {
+        let col1 = document.createElement("td"),
+            col2 = document.createElement("td");
+        col1.appendChild(document.createTextNode(col1Text));
+        col2.appendChild(document.createTextNode(col2Text));
+        let node = document.createElement("tr");
+        node.appendChild(col1);
+        node.appendChild(col2);
+        tbody.appendChild(node);
+    }
     </script>
 </head>
 <body>
@@ -234,8 +258,16 @@
             <div style="float:left;width:30%;height:100%;">
                 <img id="image" src="images/Default_Left.png" style="float:right;height:100%;">
             </div>
-            <div style="margin-left:30%;width:70%;">
-                <ul id="stats"></ul>
+            <div style="margin-left:40%;width:60%;">
+                <table class="table" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stats"></tbody>
+                </table>
             </div>
         </div>
     </div>
