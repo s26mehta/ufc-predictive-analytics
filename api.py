@@ -238,7 +238,7 @@ def add_fighter():
         cursor.execute("Select fighters from dashboards where user_id=%s" % request.form['user_id'])
         row = cursor.fetchone()
         old_fighters= row[0]
-        add_fighters = request.form['fighters'].split(",")
+        add_fighters = request.form['fighter_id'].split(",")
         for fighter in add_fighters:
             old_fighters = old_fighters + ", " + fighter
         cursor.execute("Update dashboards set fighters = '%s' where user_id='%s'" % (old_fighters, request.form['user_id']))

@@ -7,8 +7,254 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/signup-login.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.js"></script>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <script>
+    let fighters = [];
+    let properties = [];
+
+    const waitForFinalEvent = (()=>{
+        let timers = {};
+        return function (callback, ms, uniqueId) {
+            if (timers[uniqueId]) {
+                clearTimeout(timers[uniqueId]);
+            }
+            timers[uniqueId] = setTimeout(callback, ms);
+        };
+    })();
+    class Fighter {
+        constructor(name, colour, values) {
+            this.name = name;
+            if (colour) {
+                this.colour = colour;
+            }
+            else {
+                this.colour = randomColour();
+            }
+            this.values = values;
+        }
+        numberOfValues() {
+            return this.values.length;
+        }
+        maxValue(length) {
+            return sortDescending(this.values)[0];
+        }
+    }
+    window.addEventListener("resize", ()=> {
+    	waitForFinalEvent(this.plot(), 200, "");
+    });
+    $.ajax({
+        url:"http://127.0.0.1:5000/api/get_dashboard",
+        type:"POST",
+        dataType:"json",
+        data:{user_id:window.sessionStorage.getItem("userId")},
+        success:function(result){
+            if (!result['success']){
+                console.log("Dashboard data not found.");
+                return;
+            }
+            console.log("Dashboard data acquired.");
+            console.log(result.fighters);
+
+            fighters = result.fighters;
+            const length = fighters.length;
+            for (let i = 0; i < length; i++) {
+                fighters[i].colour = randomColour();
+            }
+            displayFighters();
+            plot();
+        },
+        error:function(msg){
+            console.error(msg);
+        }
+    });
+
+    $(document).on("click", "#select>option", function () {
+        if ( 3 <= $(this).siblings(":selected").length ) {
+            $(this).removeAttr("selected");
+        }
+        else {
+            $options = $(document.getElementById("select")).find(":selected");
+            const length = $options.length;
+            properties = [];
+            for (let i=0; i<length; i++) {
+                properties[i] = $options[i].value;
+            }
+            plot();
+        }
+    });
+    function displayFighters() {
+        const length = fighters.length;
+        const thumbnails = d3.select("#fighters-followed");
+        for (let index = 0; index < length; index++) {
+            const fighter = fighters[index];
+
+            let thumbnail = thumbnails.append("div")
+                .attr("class", "thumbnail fighter-"+(index))
+                .style("border-color", (fighter.colour));
+            thumbnail.append("img")
+                .attr("src", fighter.profile_image);
+            thumbnail.append("p")
+                .text(fighter.first_name+" "+fighter.last_name);
+        }
+        thumbnails.append("a")
+            .attr("href", "search.html")
+                .append("div")
+                .attr("class", "thumbnail")
+                .attr("id", "add-fighter")
+                    .append("div")
+                    .attr("class", "glyphicon glyphicon-plus");
+
+    }
+    function plot() {
+        d3.selectAll("#graph svg").remove();
+
+        let computedDiv = window.getComputedStyle(document.getElementById("graph"), null);
+        let divWidth = parseInt(computedDiv.width);
+        let divHeight = parseInt(computedDiv.height);
+        // console.log(divWidth);
+
+        const numberOfPoints = properties.length;
+        const length = fighters.length;
+
+        const paddingBot = 25;//bottom
+        const paddingLR = 5;
+        const height = divHeight-paddingBot;
+        const width = divWidth;
+        // const
+        const x0 = 0;
+        const y0 = divHeight-paddingBot;
+
+        const graph = d3.select("#graph")
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%");
+
+        graph.append("polyline")
+            .attr("points", (x0)+","+(y0)+" "+(divWidth)+","+(y0))
+            .attr("vector-effect", "non-scaling-stroke")
+            .style("stroke", "#000")
+            .style("stroke-width", "3px")
+            .style("fill", "none");
+
+        for (let i = 0; i < numberOfPoints; i++){
+            let maxValue = 0,
+                xGroup = width/numberOfPoints,
+                dx = (xGroup-paddingLR*2)/length;
+            for (let index = 0; index < length; index++) {
+                let value = fighters[index][properties[i]];
+                console.log(value);
+                if(!value){
+                    value = 0;
+                }
+                else {
+                    value = value.match(/\d+\.\d+/);
+
+                    if (value == null) {
+                        value = 0;
+                    }
+                    else {
+                        value = value[0];
+                    }
+                }
+                // console.log(value);
+
+                if (value > maxValue) {
+                    maxValue = value;
+                }
+                fighters[index][properties[i]]=value;
+            }
+            for (let index = 0; index < length; index++) {
+                let fighter = fighters[index],
+                    value = fighter[properties[i]];
+
+                let xGroupStart = xGroup*i+paddingLR,
+                    y = height*(1-value/maxValue);
+                console.log(height*(1-value/maxValue));
+                graph.append("rect")
+                    .attr("x", xGroupStart+index*dx)
+                    .attr("y", y)
+                    .attr("width", dx)
+                    .attr("height", height-y)
+                    .style("fill", fighter.colour);
+            }
+
+        // graph.append("polyline")
+        //     .attr("points", function () {
+        //         let str = (x0)+","+(fighter.values[0]);
+        //         for (let i = 1; i < numberOfPoints; i++) {
+        //             str += " "+(x0+i*width/(numberOfPoints-1))+","+(fighter.values[i]);
+        //         }
+        //         return str;
+        //     })
+        //     .attr("class", "fighter-"+(index))
+        //     .style("stroke", (fighter.colour));
+        }
+    }
+    /*function rePlot() {
+        d3.selectAll("#graph svg").remove();
+
+        let computedDiv = window.getComputedStyle(document.getElementById("graph"), null);
+        let divWidth = parseInt(computedDiv.width);
+        let divHeight = parseInt(computedDiv.height);
+
+        const length = fighters.length;
+
+        const padding = 25;
+        const height = divHeight-padding;
+        const width = divWidth;
+        const x0 = 0;
+        const y0 = divHeight-padding;
+
+        const graph = d3.select("#graph")
+            .append("svg")
+            .attr("width", "100%")
+            .attr("height", "100%");
+
+        graph.append("polyline")
+            .attr("points", (x0)+","+(y0)+" "+(divWidth)+","+(y0))
+            .attr("vector-effect", "non-scaling-stroke")
+            .style("stroke", "#000")
+            .style("stroke-width", "3px")
+            .style("fill", "none");
+
+        // for (let i = 0; i < )
+        for (let index = 0; index < length; index++) {
+            const fighter = fighters[index];
+
+            graph.append("polyline")
+                .attr("points", function () {
+                    let str = (x0)+","+(fighter.values[0]);
+                    for (let i = 1; i < numberOfPoints; i++) {
+                        str += " "+(x0+i*width/(numberOfPoints-1))+","+(fighter.values[i]);
+                    }
+                    return str;
+                })
+                .attr("class", "fighter-"+(index))
+                .style("stroke", (fighter.colour));
+        }
+    }*/
+    function sort(arr) {
+        return arr.concat().sort(subtract1);
+    }
+    function sortDescending(arr) {
+        return arr.concat().sort(subtract2);
+    }
+    function subtract1(a, b) {
+        return a - b;
+    }
+    function subtract2(a, b) {
+        return b - a;
+    }
+    function randomColour() {
+        return "hsl("+(Math.floor(Math.random()*360))+","+(Math.floor(Math.sqrt(Math.random())*100))+"%,50%)";
+    }
+    function randomNumber(maxValue) {
+        return Math.floor(Math.random()*maxValue);
+    }
+    </script>
 </head>
 <body>
     <!--Sign Up modal-->
@@ -117,192 +363,22 @@
     <div class="container-fluid login-required" style="width:100%;">
         <div class="page-header">
             <h1>Dashboard</h1>
+            <select class="form-control" id="select" multiple="multiple">
+                <option value="avg_fight_time">Average Fight Time</option>
+                <option value="kd_avg">Kickdown Average</option>
+                <option value="sapm">Strikes Attempted Per Minute</option>
+                <option value="slpm">Strikes Landed Per Minute</option>
+                <option value="striking_accuracy">Striking Accuracy</option>
+                <option value="striking_defense">Striking Defense</option>
+                <option value="takedown_accuracy">Takedown Accuracy</option>
+                <option value="takedown_defense">Takedown Defense</option>
+                <option value="takedown_avg">Takedown Average</option>
+                <option value="record">Winning Ratio</option>
+            </select>
         </div>
         <div id="graph" style="width:100%;height:500px;"></div>
         <div id="fighters-followed"></div>
     </div>
 
-    <script>
-    const waitForFinalEvent = (()=>{
-        let timers = {};
-        return function (callback, ms, uniqueId) {
-            if (timers[uniqueId]) {
-                clearTimeout(timers[uniqueId]);
-            }
-            timers[uniqueId] = setTimeout(callback, ms);
-        };
-    })();
-    class Fighter {
-        constructor(name, colour, values) {
-            this.name = name;
-            if (colour) {
-                this.colour = colour;
-            }
-            else {
-                this.colour = randomColour();
-            }
-            this.values = values;
-        }
-        numberOfValues() {
-            return this.values.length;
-        }
-        maxValue(length) {
-            return sortDescending(this.values)[0];
-        }
-    }
-    window.addEventListener("resize", ()=> {
-    	waitForFinalEvent(this.rePlot(), 200, "");
-    });
-    let fighters;
-    $.ajax({
-        url:"http://127.0.0.1:5000/api/get_dashboard",
-        type:"POST",
-        dataType:"json",
-        data:{user_id:window.sessionStorage.getItem("userId")},
-        success:function(result){
-            if (!result['success']){
-                console.log("Dashboard data not found.");
-                return;
-            }
-            console.log("Dashboard data acquired.");
-            console.log(result.fighters);
-            fighters = result.fighters;
-            plot();
-        },
-        error:function(msg){
-            console.error(msg);
-        }
-    });
-
-    let fightersFollowed = [];
-    const numberOfPoints = 5;
-
-    function plot() {
-        d3.selectAll("#graph svg").remove();
-
-        let computedDiv = window.getComputedStyle(document.getElementById("graph"), null);
-        let divWidth = parseInt(computedDiv.width);
-        let divHeight = parseInt(computedDiv.height);
-        // console.log(divWidth);
-
-        const length = fighters.length;
-
-        const padding = 25;//bottom
-        const height = divHeight-padding;
-        const width = divWidth-3;
-        const x0 = 3;
-        const y0 = divHeight-padding;
-
-        for (let index = 0; index < 4; index++) {
-            let val = [];
-            for (let i=0; i<numberOfPoints; i++) {
-                val[i] = randomNumber(height);
-            }
-            fightersFollowed[index] = new Fighter(null, null, val);
-        }
-
-        const thumbnails = d3.select("#fighters-followed");
-        const graph = d3.select("#graph")
-            .append("svg")
-            .attr("width", "100%")
-            .attr("height", "100%");
-
-        graph.append("polyline")
-            .attr("points", (x0)+","+(0)+" "+(x0)+","+(y0)+" "+(divWidth)+","+(y0))
-            .attr("vector-effect", "non-scaling-stroke")
-            .style("stroke", "#000")
-            .style("stroke-width", "3px")
-            .style("fill", "none");
-
-        for (let index = 0; index < length; index++) {
-            const fighter = fightersFollowed[index];
-
-            let thumbnail = thumbnails.append("div")
-                .attr("class", "thumbnail fighter-"+(index))
-                .style("border-color", (fighter.colour));
-            thumbnail.append("img")
-                .attr("src", fighters[index].profile_image);
-            thumbnail.append("p")
-                .text(fighters[index].first_name+" "+fighters[index].last_name)
-
-            graph.append("polyline")
-                .attr("points", function () {
-                    let str = (x0)+","+(fighter.values[0]);
-                    for (let i = 1; i < numberOfPoints; i++) {
-                        str += " "+(x0+i*width/(numberOfPoints-1))+","+(fighter.values[i]);
-                    }
-                    return str;
-                })
-                .attr("class", "fighter-"+(index))
-                .style("stroke", (fighter.colour));
-        }
-        thumbnails.append("a")
-            .attr("href", "search.html")
-                .append("div")
-                .attr("class", "thumbnail")
-                .attr("id", "add-fighter")
-                    .append("div")
-                    .attr("class", "glyphicon glyphicon-plus");
-    }
-    function rePlot() {
-        d3.selectAll("#graph svg").remove();
-
-        let computedDiv = window.getComputedStyle(document.getElementById("graph"), null);
-        let divWidth = parseInt(computedDiv.width);
-        let divHeight = parseInt(computedDiv.height);
-
-        const length = fighters.length;
-        const padding = 25;
-        const height = divHeight-padding;
-        const width = divWidth-padding;
-        const x0 = padding;
-        const y0 = divHeight-padding;
-
-        const graph = d3.select("#graph")
-            .append("svg")
-            .attr("width", "100%")
-            .attr("height", "100%");
-
-        graph.append("polyline")
-            .attr("points", (x0)+","+(0)+" "+(x0)+","+(y0)+" "+(divWidth)+","+(y0))
-            .attr("vector-effect", "non-scaling-stroke")
-            .style("stroke", "#000")
-            .style("stroke-width", "3px")
-            .style("fill", "none");
-
-        for (let index = 0; index < length; index++) {
-            const fighter = fightersFollowed[index];
-
-            graph.append("polyline")
-                .attr("points", function () {
-                    let str = (x0)+","+(fighter.values[0]);
-                    for (let i = 1; i < numberOfPoints; i++) {
-                        str += " "+(x0+i*width/(numberOfPoints-1))+","+(fighter.values[i]);
-                    }
-                    return str;
-                })
-                .attr("class", "fighter-"+(index))
-                .style("stroke", (fighter.colour));
-        }
-    }
-    function sort(arr) {
-        return arr.concat().sort(subtract1);
-    }
-    function sortDescending(arr) {
-        return arr.concat().sort(subtract2);
-    }
-    function subtract1(a, b) {
-        return a - b;
-    }
-    function subtract2(a, b) {
-        return b - a;
-    }
-    function randomColour() {
-        return "hsl("+(Math.floor(Math.random()*360))+","+(Math.floor(Math.sqrt(Math.random())*100))+"%,50%)";
-    }
-    function randomNumber(maxValue) {
-        return Math.floor(Math.random()*maxValue);
-    }
-    </script>
 </body>
 </html>

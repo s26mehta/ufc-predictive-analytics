@@ -107,6 +107,26 @@
                 }
             });
         }
+
+        $(document).on("click", "#add-fighter", function(){
+            let fighterId = $(document.getElementById("search-select")).find(":selected").val();
+            $.ajax({
+                url:"http://127.0.0.1:5000/api/dashboard/add_fighter",
+                type:"POST",
+                dataType:"json",
+                data:{fighter_id:fighterId,user_id:window.sessionStorage.getItem("userId")},
+                success:function(result){
+                    if(!result['success']){
+                        console.log("Could not add fighter.");
+                        return;
+                    }
+                    console.log("Fighter added.")
+                },
+                error:function(msg){
+                    console.error(msg);
+                }
+            });
+        });
     });
 
     function appendNode(parentNode, childString, text) {
@@ -234,7 +254,12 @@
     <div class="container-fluid">
         <div class="row jumbotron">
             <div style="margin-left:20%;margin-right:20%;">
-                <select class="form-control" id="search-select"></select>
+                <div class="input-group">
+                    <select class="form-control" id="search-select"></select>
+                    <span class="input-group-btn">
+                        <button id="add-fighter" type="button" class="btn btn-default"><span class="glyphicon glyphicon-plus"></span></button>
+                    </span>
+                </div>
             </div>
         </div>
         <div class="row" id="search-results" style="width:100%;height:500px;">
