@@ -683,4 +683,9 @@ def load_live_fight_data():
                     except:
                         continue
 
-load_live_fight_data()
+
+if __name__ == '__main__':
+    load_fighters()
+    load_events()
+    load_fights()
+    load_live_fight_data()
