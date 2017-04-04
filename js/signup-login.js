@@ -20,9 +20,13 @@ $(document).ready(function() {
                     $(document.getElementById("account").children).toggle();
                     document.getElementById("user").appendChild(document.createTextNode(result['first_name']));
                     $("#add-fighter").css('visibility', 'visible');
+                    console.log(location.href)
+                    if (location.href.substr(location.href.length - 10) == "index.html") {
+                        location.href = "dashboard.html";
+                    }
                 }
                 else
-                    console.log("Login failed");
+                    alert("Login failed. We could not verify your username and password. Please try again.");
             },
             error:function(msg){
                 console.error(msg);
@@ -71,7 +75,7 @@ $(document).ready(function() {
                     location.href = "dashboard.html";
                 }
                 else
-                    console.log("Sign up failed");
+                    alert("Sign up failed! Please try again.");
             },
             error:function(msg){
                 console.error(msg);

@@ -80,6 +80,7 @@
     $(document).on("click", "#select>option", function () {
         if ( 3 <= $(this).siblings(":selected").length ) {
             $(this).removeAttr("selected");
+            alert("You have selected more than three values to compare, please only choose three.");
         }
         else {
             $options = $(document.getElementById("select")).find(":selected");

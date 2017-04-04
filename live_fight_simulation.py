@@ -49,4 +49,4 @@ def add_live_fight_data(fight_id, fighter_id, round_num, knock_down_landed, tota
         return False
 
 
-print add_live_fight_data('286539', '535918', '1', '10', '10:20', '1:10', '1:10', '0:0', '20:25', '1:5', '1:5', '0', '0', '0', '0')
+print add_live_fight_data('286539', '535918', '1', '14', '10:20', '1:10', '1:10', '1:0', '20:25', '1:5', '1:5', '0', '0', '0', '0')
