@@ -9,7 +9,10 @@ server = 'ufcserve.database.windows.net'
 database = 'ufcDB'
 username = 's26mehta'
 password = 'Syde223@'
-driver = '{ODBC Driver 13 for SQL Server}'
+driver = '{SQL Server}'
+from sys import platform
+if platform == "darwin":
+    driver = '{ODBC Driver 13 for SQL Server}'
 
 @app.route('/api/sign_up', methods=['POST'])
 def sign_up():
