@@ -194,7 +194,7 @@
                     graph.append("text")
                         .attr("x", xGroupStart+index*dx+dx/2)
                         .attr("y", y+(height-y)/2)
-                        .text(value[index])
+                        .text(Math.round(value[index]*100)/100)
                         .attr("class", "outline")
                         .attr("text-anchor", "middle")
                         .attr("dominant-baseline", "central")
