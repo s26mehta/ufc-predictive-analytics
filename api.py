@@ -1,4 +1,4 @@
-import pyodbc
+import MySQLdb
 from flask import Flask, jsonify, request, abort
 import json
 
@@ -16,12 +16,18 @@ if platform == "darwin":
 
 @app.route('/api/sign_up', methods=['POST'])
 def sign_up():
-    print request.form
+    print(request.form)
     if not request.form:
         abort(400)
     try:
-        cnxn = pyodbc.connect('DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
+        cnxn = MySQLdb.connect(host="localhost", user="root", db="ufcDB")
+        # cnxn = pyodbc.connect('DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
         cursor = cnxn.cursor()
+        print('Hi')
+        print("Insert into users(user_name, first_name, last_name, email, password) " \
+                    "VALUES ('%s', '%s', '%s', '%s', '%s')" % (request.form['user_name'], request.form['first_name'],
+                                                     request.form['last_name'], request.form['email'],
+                                                     request.form['password']))
         cursor.execute("Insert into users(user_name, first_name, last_name, email, password) " \
                     "VALUES ('%s', '%s', '%s', '%s', '%s')" % (request.form['user_name'], request.form['first_name'],
                                                      request.form['last_name'], request.form['email'],
@@ -29,14 +35,15 @@ def sign_up():
         cnxn.commit()
         cursor.execute("Select id from users where user_name = '%s' and email = '%s' and last_name = '%s'" % (request.form['user_name'], request.form['email'], request.form['last_name']))
         row = cursor.fetchone()
-        print row
+        # print row
         cursor.execute("Insert into dashboards(user_id, fighters) " \
                        "VALUES ('%s', '%s')" % (row[0], '302601'))
         cnxn.commit()
         cursor.close()
         cnxn.close()
         return jsonify(success=True, user_id=row[0])
-    except:
+    except e as error:
+        print('HIT')
         return jsonify(success=False)
 
 
@@ -45,13 +52,14 @@ def log_in():
     if not request.form:
         abort(400)
     try:
-        cnxn = pyodbc.connect(
-            'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
-            ';PWD=' + password)
+        cnxn = MySQLdb.connect(host="localhost", user="root", db="ufcDB")
+        # cnxn = pyodbc.connect(
+        #     'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
+        #     ';PWD=' + password)
         cursor = cnxn.cursor()
         cursor.execute("Select id, user_name, password, first_name from users where user_name = '%s' and password = '%s'" % (request.form['user_name'], request.form['password']))
         row = cursor.fetchone()
-        print row
+        print(row)
         cnxn.commit()
         cursor.close()
         cnxn.close()
@@ -65,9 +73,10 @@ def log_in():
 @app.route('/api/get_all_fighters', methods=['POST'])
 def get_all_fighters():
     try:
-        cnxn = pyodbc.connect(
-            'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
-            ';PWD=' + password)
+        cnxn = MySQLdb.connect(host="localhost", user="root", db="ufcDB")
+        # cnxn = pyodbc.connect(
+        #     'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
+        #     ';PWD=' + password)
         cursor = cnxn.cursor()
         cursor.execute("Select * from fighters")
         row = cursor.fetchone()
@@ -113,14 +122,15 @@ def get_all_fighters():
 
 @app.route('/api/get_fighter', methods=['POST', 'GET'])
 def get_fighter():
-    print request.form
+    # print request.form
     if not request.form:
         abort(400)
     try:
-        print 'here'
-        cnxn = pyodbc.connect(
-            'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
-            ';PWD=' + password)
+        # print 'here'
+        cnxn = MySQLdb.connect(host="localhost", user="root", db="ufcDB")
+        # cnxn = pyodbc.connect(
+        #     'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
+        #     ';PWD=' + password)
         cursor = cnxn.cursor()
         cursor.execute("Select * from fighters where id=%s" % request.form['id'])
         row = cursor.fetchone()
@@ -164,20 +174,22 @@ def get_fighter():
 
 @app.route('/api/get_dashboard', methods=['POST'])
 def get_dashboard():
-    print request.form
-    print request.json
+    # print request.form
+    # print request.json
     if not request.form:
         abort(400)
     try:
-        cnxn = pyodbc.connect(
-            'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
-            ';PWD=' + password)
+        cnxn = MySQLdb.connect(host="localhost", user="root", db="ufcDB")
+
+        # cnxn = pyodbc.connect(
+        #     'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
+        #     ';PWD=' + password)
         cursor = cnxn.cursor()
         cursor.execute("Select * from dashboards where user_id='%s'" % request.form['user_id'])
         row1 = cursor.fetchone()
-        print 'here'
+        # print 'here'
 
-        print row1
+        # print row1
         res = []
         a = {
             'id' : row1[0],
@@ -186,13 +198,13 @@ def get_dashboard():
         }
         res.append(a)
         all_fighters_id = a['fighters'].split(",")
-        print all_fighters_id
+        print(all_fighters_id)
         fighters = []
         for fighter in all_fighters_id:
             cursor.execute("Select * from fighters where id=%s" % fighter)
             row = cursor.fetchone()
-            print 'here'
-            print row
+            # print 'here'
+            # print row
             x = {
                 'id': row[0],
                 'first_name': row[1],
@@ -236,9 +248,10 @@ def add_fighter():
     if not request.form:
         abort(400)
     try:
-        cnxn = pyodbc.connect(
-            'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
-            ';PWD=' + password)
+        cnxn = MySQLdb.connect(host="localhost", user="root", db="ufcDB")
+        # cnxn = pyodbc.connect(
+        #     'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
+        #     ';PWD=' + password)
         cursor = cnxn.cursor()
         cursor.execute("Select fighters from dashboards where user_id=%s" % request.form['user_id'])
         row = cursor.fetchone()
@@ -260,9 +273,10 @@ def get_live_fight_data():
     if not request.form:
         abort(400)
     try:
-        cnxn = pyodbc.connect(
-            'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
-            ';PWD=' + password)
+        cnxn = MySQLdb.connect(host="localhost", user="root", db="ufcDB")
+        # cnxn = pyodbc.connect(
+        #     'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
+        #     ';PWD=' + password)
         cursor = cnxn.cursor()
 
         cursor.execute(

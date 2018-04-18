@@ -1,20 +1,21 @@
-import pyodbc
-import urllib2
-import simplejson as json
+import MySQLdb
+import urllib.request as urllib2
+import json
 import flask
 import datetime
 
 server = 'ufcserve.database.windows.net'
 database = 'ufcDB'
-username = 's26mehta'
-password = 'Syde223@'
+username = 'root'
+password = ''
 driver= '{ODBC Driver 13 for SQL Server}'
 
 
 def load_fighters():
     fighters = json.load(urllib2.urlopen("http://ufc-data-api.ufc.com/api/v3/fighters"))
+
     for fighter in fighters:
-        print fighter
+        print(fighter)
         id = str(fighter['id'])
         try:
             nickname = str(fighter['nickname'] if fighter['rank'] != None else 'null')
@@ -31,8 +32,10 @@ def load_fighters():
         rank = str(fighter['rank'] if fighter['rank'] != None else 'null')
         pfp_rank = str(fighter['pound_for_pound_rank'] if fighter['pound_for_pound_rank']!= None else 'null')
         first_name = str(fighter['first_name'])
+        first_name = first_name.replace("'", "\\'")
         try:
             last_name = str(fighter['last_name'])
+            last_name = last_name.replace("'", "\\'")
         except:
             last_name = fighter['last_name'].encode('utf-8')
         profile_image = str(fighter['profile_image'])
@@ -60,10 +63,20 @@ def load_fighters():
         takedown_defense = '0'
         submission_avg = '0'
 
-        cnxn = pyodbc.connect(
-            'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
-            ';PWD=' + password)
+        cnxn = MySQLdb.connect(host="localhost", user="root", db="ufcDB")
+        # cnxn = pyodbc.connect(
+        #     'DRIVER=' + driver + ';PORT=3306;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
+        #     ';PWD=' + password)
         cursor = cnxn.cursor()
+        # print("Insert into fighters(id, first_name, last_name, nickname, wins, losses, draws, rank, "
+        #                "pfp_rank, profile_image, fighter_status, weight_class, right_image, left_image, reach, "
+        #                "weight, height, avg_fight_time, kd_avg, slpm, striking_accuracy, sapm, striking_defense, "
+        #                "takedown_avg, takedown_accuracy, takedown_defense, submission_avg) VALUES ('"+id+
+        #                "', '"+first_name+"', '"+last_name+"', '"+nickname+"', '"+wins+"', '"+losses+"', '"+draws+"', '"+rank+
+        #                "', '"+pfp_rank+"', '"+profile_image+"', '"+fighter_status+"', '"+weight_class+"', '"+right_image+
+        #                "', '"+left_image+"', '"+reach+"', '"+weight+"', '"+height+"', '"+avg_fight_time+"', '"+kd_avg+"', '"+slpm+
+        #                "', '"+striking_accuracy+"', '"+sapm+"', '"+striking_defense+"', '"+takedown_avg+"', '"+takedown_accuracy+
+        #                "', '"+takedown_defense+"', '"+submission_avg+"')")
         cursor.execute("Insert into fighters(id, first_name, last_name, nickname, wins, losses, draws, rank, "
                        "pfp_rank, profile_image, fighter_status, weight_class, right_image, left_image, reach, "
                        "weight, height, avg_fight_time, kd_avg, slpm, striking_accuracy, sapm, striking_defense, "
@@ -83,7 +96,7 @@ def load_events():
     events = json.load(urllib2.urlopen("http://ufc-data-api.ufc.com/api/v3/events"))
 
     for i in range(len(events)):
-        print events[i]
+        print(events[i])
         id = str(events[i]['id'])
         if events[i]['event_time_text'] != '':
             event_date = datetime.datetime.strptime(events[i]['event_date'], '%Y-%m-%dT%H:%M:%SZ')
@@ -115,9 +128,10 @@ def load_events():
         except:
             main_fighter_2 = 'null'
 
-        cnxn = pyodbc.connect(
-            'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
-            ';PWD=' + password)
+        cnxn = MySQLdb.connect(host="localhost", user="root", db="ufcDB")
+        # cnxn = pyodbc.connect(
+        #     'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
+        #     ';PWD=' + password)
         cursor = cnxn.cursor()
         cursor.execute("Insert into events(id, event_time, base_title, title_tag_line, subtitle, event_status, "
                        "last_modified, url_name, main_fighter_1, main_fighter_2) VALUES ('" + id +
@@ -132,12 +146,11 @@ def load_events():
 
 def load_fights():
     events = json.load(urllib2.urlopen("http://ufc-data-api.ufc.com/api/v3/events"))
-    print len(events)
-    for i in range(len()):
+    print(len(events))
+    for i in range(len(events)):
         event_id = str(events[i]['id'])
         fights = json.load(urllib2.urlopen("http://ufc-data-api.ufc.com/api/v3/events/"+event_id+"/fights"))
         for i in range(len(fights)):
-            print fights[i]
             id = str(fights[i]['id'])
             try:
                 weight_class = fights[i]['fighter1_weight_class'] if fights[i]['fighter1_weight_class'] != None else 'null'
@@ -184,14 +197,15 @@ def load_fights():
             except:
                 result_method = 'null'
 
-            cnxn = pyodbc.connect(
-                'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
-                ';PWD=' + password)
+            cnxn = MySQLdb.connect(host="localhost", user="root", db="ufcDB")
+            # cnxn = pyodbc.connect(
+            #     'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
+            #     ';PWD=' + password)
             cursor = cnxn.cursor()
-            a = "Insert into fights(id, event_id, weight_class, live_stats_url, winner, fighter1_id, " \
+            a = "Insert into fights(id, event_id, weight_class, live_status_url, winner, fighter1_id, " \
                 "fighter2_id, ending_round, result_method, fighter1_image, fighter2_image) VALUES ('" + id + "', '" + event_id + "', '" + weight_class + "', '" + live_stats_url + "', '" + winner +"', '" + fighter1_id + "', '" + fighter2_id + "', '" + ending_round + "', '" + result_method +"', '" + fighter1_image +"', '" + fighter2_image + "')"
-            print a
-            cursor.execute("Insert into fights(id, event_id, weight_class, live_stats_url, winner, fighter1_id, "
+            print(a)
+            cursor.execute("Insert into fights(id, event_id, weight_class, live_status_url, winner, fighter1_id, "
                            "fighter2_id, ending_round, result_method, fighter1_image, fighter2_image) VALUES ('" + id +
                            "', '" + event_id + "', '" + weight_class + "', '" + live_stats_url + "', '" + winner +
                            "', '" + fighter1_id + "', '" + fighter2_id + "', '" + ending_round + "', '" + result_method +
@@ -254,12 +268,13 @@ def load_fights():
             except:
                 fighter1_submission_avg = 'null'
 
-            cnxn = pyodbc.connect(
-                'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
-                ';PWD=' + password)
+            cnxn = MySQLdb.connect(host="localhost", user="root", db="ufcDB")
+            # cnxn = pyodbc.connect(
+            #     'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
+            #     ';PWD=' + password)
             cursor = cnxn.cursor()
             a = "Update fighters Set reach = '"+fighter1_reach+"', weight ='"+fighter1_weight+"', height = '"+fighter1_height+"', avg_fight_time = '"+fighter1_avg_fight_time+"', kd_avg = '"+fighter1_kd_avg+"', slpm = '"+fighter1_slpm+"', striking_accuracy= '"+fighter1_striking_accuracy+"', sapm = '"+fighter1_sapm+"', striking_defense = '"+fighter1_striking_defense+"', takedown_avg = '"+fighter1_takedown_avg+"', takedown_accuracy = '"+fighter1_takedown_accuracy+"', takedown_defense = '"+fighter1_takedown_defense+"', submission_avg = '"+fighter1_submission_avg+"' where id = '"+fighter1_id+"'"
-            print a
+            print(a)
             cursor.execute("Update fighters Set reach = '"+fighter1_reach+"', weight ='"+fighter1_weight+
                            "', height = '"+fighter1_height+"', avg_fight_time = '"+fighter1_avg_fight_time+"', "
                            "kd_avg = '"+fighter1_kd_avg+"', slpm = '"+fighter1_slpm+"', "
@@ -324,9 +339,10 @@ def load_fights():
             except:
                 fighter2_submission_avg = 'null'
 
-            cnxn = pyodbc.connect(
-                'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
-                ';PWD=' + password)
+            cnxn = MySQLdb.connect(host="localhost", user="root", db="ufcDB")
+            # cnxn = pyodbc.connect(
+            #     'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
+            #     ';PWD=' + password)
             cursor = cnxn.cursor()
             cursor.execute("Update fighters Set reach = '"+fighter2_reach+"', weight ='"+fighter2_weight+
                            "', height = '"+fighter2_height+"', avg_fight_time = '"+fighter2_avg_fight_time+"', "
@@ -343,20 +359,26 @@ def load_fights():
 def load_live_fight_data():
     count = 0
     events = json.load(urllib2.urlopen("http://ufc-data-api.ufc.com/api/v3/events"))
-    print len(events)
+    print(len(events))
     for j in range(8,88):
-        print j
+        # print(j)
         event_id = str(events[j]['id'])
-        print event_id
+        # print(event_id)
         fights = json.load(urllib2.urlopen("http://ufc-data-api.ufc.com/api/v3/events/" + event_id + "/fights"))
         for i in range(len(fights)):
+            if 'version' in fights[i]:
+                if fights[i]['version'] == 4:
+                    continue
             fight_id = str(fights[i]['id'])
             fighter1_id = str(fights[i]['fighter1_id'])
+            # print(fights[i])
+            # print(fights[i]['fighter1_first_name'])
+            # print(fights[i]['fighter1_last_name'])
             fighter1_name = fights[i]['fighter1_first_name']+" "+ fights[i]['fighter1_last_name']
-            print fighter1_name
+            # print(fighter1_name)
             fighter2_id = str(fights[i]['fighter2_id'])
             fighter2_name = fights[i]['fighter2_first_name']+" "+ fights[i]['fighter2_last_name']
-            print fighter2_name
+            print(fighter2_name)
             live_stats_url = fights[i]['fm_stats_feed_url'] if fights[i]['fm_stats_feed_url'] != None else 'null'
             try:
                 live_data = json.load(urllib2.urlopen(live_stats_url))
@@ -372,7 +394,7 @@ def load_live_fight_data():
                     continue
 
                 if fighter1_name != live_data['FMLiveFeed']['Fighters']['Red']['Name'] and fighter2_name != live_data['FMLiveFeed']['Fighters']['Blue']['Name']:
-                    print False
+                    print(False)
                     temp = fighter1_id
                     fighter1_id = fighter2_id
                     fighter2_id = temp
@@ -383,7 +405,7 @@ def load_live_fight_data():
                     if i == 2 and live_stats_url == 'http://liveapi.fightmetric.com/V2/745/5632/Stats.json':
                         continue
                     round_num = i
-                    print "Round is %s" % round_num
+                    print("Round is %s" % round_num)
                     fighter1_knock_down_landed = live_data['FMLiveFeed']['RoundStats']['Round%s'%i]['Red']['Strikes']['Knock Down']['Landed']
                     fighter1_significant_strikes= live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Significant Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Significant Strikes']['Attempts']
                     fighter1_total_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Total Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Total Strikes']['Attempts']
@@ -627,9 +649,10 @@ def load_live_fight_data():
                     live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Grappling']['Standups']['Landed']
 
                     try:
-                        cnxn = pyodbc.connect(
-                            'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
-                            ';PWD=' + password)
+                        cnxn = MySQLdb.connect(host="localhost", user="root", db="ufcDB")
+                        # cnxn = pyodbc.connect(
+                        #     'DRIVER=' + driver + ';PORT=1433;SERVER=' + server + ';PORT=1443;DATABASE=' + database + ';UID=' + username +
+                        #     ';PWD=' + password)
                         cursor = cnxn.cursor()
                         cursor.execute(
                             "Insert into live_fight_data(fight_id, round, fighter_id, knock_down_landed, significant_strikes, "
@@ -681,11 +704,13 @@ def load_live_fight_data():
                         cursor.close()
                         cnxn.close()
                     except:
+                        print('Hit')
                         continue
 
 
 if __name__ == '__main__':
-    load_fighters()
-    load_events()
-    load_fights()
+    # load_fighters()
+    # load_events()
+    # load_fights()
     load_live_fight_data()
+    print()

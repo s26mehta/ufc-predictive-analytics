@@ -1,7 +1,7 @@
-Create the UFC Database:
+Create Database ufcDB;
 
 CREATE TABLE users (
-  id INT NOT NULL IDENTITY(1,1),
+  id INT NOT NULL AUTO_INCREMENT,
   password VARCHAR(120) NOT NULL,
   first_name VARCHAR(120) NOT NULL,
   last_name VARCHAR(120) NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE users (
   PRIMARY KEY (id))
 
 CREATE TABLE dashboards (
-  id INT NOT NULL IDENTITY(1,1),
+  id INT NOT NULL AUTO_INCREMENT,
   fighters VARCHAR(120) NULL,
   user_id INT NOT NULL,
   PRIMARY KEY (id),
@@ -79,7 +79,7 @@ CREATE TABLE fights (
     REFERENCES events(id))
 
 CREATE TABLE live_fight_data (
-  id INT NOT NULL IDENTITY(1,1),
+  id INT NOT NULL AUTO_INCREMENT,
   fight_id VARCHAR(45) NOT NULL,
   round VARCHAR(45) NULL,
   fighter_id VARCHAR(45) NOT NULL,
