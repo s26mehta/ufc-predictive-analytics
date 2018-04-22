@@ -181,12 +181,13 @@ def load_fights():
                 live_stats_url = 'null'
 
             try:
-                if str(fights[i]['fighter1_is_winner']) == 'true':
-                    winner = fighter1_id
+                print(fights[i]['fighter1_is_winner'])
+                if (fights[i]['fighter1_is_winner']) == True:
+                    winner = str(1)
                 else:
-                    winner = fighter2_id
+                    winner = str(2)
             except:
-                winner = 'null'
+                winner = str(0)
 
             try:
                 result_method = fights[i]['result']['Method'] if fights[i]['result']['Method'] != None else 'null'
@@ -374,7 +375,10 @@ def load_live_fight_data():
             # print(fights[i])
             # print(fights[i]['fighter1_first_name'])
             # print(fights[i]['fighter1_last_name'])
-            fighter1_name = fights[i]['fighter1_first_name']+" "+ fights[i]['fighter1_last_name']
+            try:
+                fighter1_name = fights[i]['fighter1_first_name']+" "+ fights[i]['fighter1_last_name']
+            except:
+                continue
             # print(fighter1_name)
             fighter2_id = str(fights[i]['fighter2_id'])
             fighter2_name = fights[i]['fighter2_first_name']+" "+ fights[i]['fighter2_last_name']
@@ -709,8 +713,8 @@ def load_live_fight_data():
 
 
 if __name__ == '__main__':
-    # load_fighters()
-    # load_events()
-    # load_fights()
-    load_live_fight_data()
+    load_fighters()
+    load_events()
+    load_fights()
+    # load_live_fight_data()
     print()

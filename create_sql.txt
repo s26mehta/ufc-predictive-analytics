@@ -7,7 +7,7 @@ CREATE TABLE users (
   last_name VARCHAR(120) NOT NULL,
   email VARCHAR(120) NOT NULL UNIQUE,
   user_name VARCHAR(120) NOT NULL UNIQUE,
-  PRIMARY KEY (id))
+  PRIMARY KEY (id));
 
 CREATE TABLE dashboards (
   id INT NOT NULL AUTO_INCREMENT,
@@ -16,7 +16,7 @@ CREATE TABLE dashboards (
   PRIMARY KEY (id),
   CONSTRAINT id1
     FOREIGN KEY (user_id)
-    REFERENCES users (id))
+    REFERENCES users (id));
 
 CREATE TABLE fighters (
   id VARCHAR(45) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE fighters (
   takedown_defense VARCHAR(45) NULL,
   kd_avg VARCHAR(45) NULL,
   striking_accuracy VARCHAR(45) NULL,
-  PRIMARY KEY (id))
+  PRIMARY KEY (id));
 
 CREATE TABLE events (
   id VARCHAR(45) NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE events (
   url_name VARCHAR(120) NULL,
   main_fighter_1 VARCHAR(45) NULL,
   main_fighter_2 VARCHAR(45) NULL,
-  PRIMARY KEY (id))
+  PRIMARY KEY (id));
 
 CREATE TABLE fights (
   id VARCHAR(45) NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE fights (
   PRIMARY KEY (id),
   CONSTRAINT id2
     FOREIGN KEY (event_id)
-    REFERENCES events(id))
+    REFERENCES events(id));
 
 CREATE TABLE live_fight_data (
   id INT NOT NULL AUTO_INCREMENT,
@@ -127,5 +127,5 @@ CREATE TABLE live_fight_data (
     REFERENCES fighters(id),
   CONSTRAINT id4
     FOREIGN KEY (fight_id)
-    REFERENCES fights(id))
+    REFERENCES fights(id));
 
