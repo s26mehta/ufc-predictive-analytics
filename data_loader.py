@@ -382,7 +382,7 @@ def load_live_fight_data():
             # print(fighter1_name)
             fighter2_id = str(fights[i]['fighter2_id'])
             fighter2_name = fights[i]['fighter2_first_name']+" "+ fights[i]['fighter2_last_name']
-            print(fighter2_name)
+            # print(fighter2_name)
             live_stats_url = fights[i]['fm_stats_feed_url'] if fights[i]['fm_stats_feed_url'] != None else 'null'
             try:
                 live_data = json.load(urllib2.urlopen(live_stats_url))
@@ -411,240 +411,430 @@ def load_live_fight_data():
                     round_num = i
                     print("Round is %s" % round_num)
                     fighter1_knock_down_landed = live_data['FMLiveFeed']['RoundStats']['Round%s'%i]['Red']['Strikes']['Knock Down']['Landed']
-                    fighter1_significant_strikes= live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Significant Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Significant Strikes']['Attempts']
-                    fighter1_total_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Total Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Total Strikes']['Attempts']
-                    fighter1_punches = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Punches']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Punches']['Attempts']
-                    fighter1_kicks = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Kicks']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Kicks']['Attempts']
-                    fighter1_distance_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Strikes']['Attempts']
-                    fighter1_clinch_significant_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Significant Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Significant Strikes']['Attempts']
-                    fighter1_ground_significant_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Significant Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Significant Strikes']['Attempts']
-                    fighter1_clinch_total_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Total Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Total Strikes']['Attempts']
-                    fighter1_ground_total_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Total Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Total Strikes']['Attempts']
-                    fighter1_head_total_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Head Total Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Head Total Strikes']['Attempts']
-                    fighter1_body_total_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Body Total Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Body Total Strikes']['Attempts']
-                    fighter1_legs_total_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Legs Total Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Legs Total Strikes']['Attempts']
-                    fighter1_head_significant_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Head Significant Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Head Significant Strikes']['Attempts']
-                    fighter1_body_significant_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Body Significant Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Body Significant Strikes']['Attempts']
-                    fighter1_legs_significant_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Legs Significant Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Legs Significant Strikes']['Attempts']
-                    fighter1_distance_head_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Head Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Head Strikes']['Attempts']
-                    fighter1_distance_body_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Body Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Body Strikes']['Attempts']
-                    fighter1_distance_leg_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Leg Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Leg Strikes']['Attempts']
-                    fighter1_clinch_head_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Head Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Head Strikes']['Attempts']
-                    fighter1_clinch_body_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Body Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Body Strikes']['Attempts']
-                    fighter1_clinch_leg_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Leg Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Leg Strikes']['Attempts']
-                    fighter1_ground_head_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Head Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Head Strikes']['Attempts']
-                    fighter1_ground_body_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Body Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Body Strikes']['Attempts']
-                    fighter1_ground_leg_strikes = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Leg Strikes']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Leg Strikes']['Attempts']
-                    fighter1_distance_head_kicks = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Head Kicks']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Head Kicks']['Attempts']
-                    fighter1_distance_body_kicks = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Body Kicks']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Head Kicks']['Attempts']
-                    fighter1_distance_leg_kicks = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Leg Kicks']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Leg Kicks']['Attempts']
                     try:
-                        fighter1_distance_head_punches = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Head Punhces']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Head Punches']['Attempts']
+                        fighter1_significant_strikes= str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Significant Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Significant Strikes']['Attempts']  or 1)*100)
                     except:
-                        fighter1_distance_head_punches = '0:0'
+                        fighter1_significant_strikes = str(0)
                     try:
-                        fighter1_distance_body_punches = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Body Punhces']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Body Punches']['Attempts']
+                        fighter1_total_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Total Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Total Strikes']['Attempts'] or 1)*100)
                     except:
-                        fighter1_distance_body_punches = '0:0'
+                        fighter1_total_strikes = str(0)
                     try:
-                        fighter1_distance_body_punches = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Body Punhces']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Body Punches']['Attempts']
+                        fighter1_punches = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Punches']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Punches']['Attempts'] or 1)*100)
                     except:
-                        fighter1_distance_body_punches = '0:0'
+                        fighter1_punches = str(0)
                     try:
-                        fighter1_clinch_significant_kicks = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Significant Kicks']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Significant Kicks']['Attempts']
+                        fighter1_kicks = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Kicks']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Kicks']['Attempts'] or 1)*100)
                     except:
-                        fighter1_clinch_significant_kicks = '0:0'
-                    fighter1_clinch_significant_punches = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Significant Punches']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Significant Punches']['Attempts']
-                    fighter1_ground_significant_kicks = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Significant Kicks']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Significant Kicks']['Attempts']
-                    fighter1_ground_significant_punches = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Significant Punches']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Significant Punches']['Attempts']
-                    fighter1_takedowns = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Grappling']['Takedowns']['Landed'] + ":" + live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Grappling']['Takedowns']['Attempts']
+                        fighter1_kicks = str(0)
+                    try:
+                        fighter1_distance_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_distance_strikes = str(0)
+                    try:
+                        fighter1_clinch_significant_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Significant Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Significant Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_clinch_significant_strikes = str(0)
+                    try:
+                        fighter1_ground_significant_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Significant Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Significant Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_ground_significant_strikes = str(0)
+                    try:
+                        fighter1_clinch_total_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Total Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Total Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_clinch_total_strikes = str(0)
+                    try:
+                        fighter1_ground_total_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Total Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Total Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_ground_total_strikes = 0
+                    try:
+                        fighter1_head_total_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Head Total Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Head Total Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_head_total_strikes = str(0)
+                    try:
+                        fighter1_body_total_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Body Total Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Body Total Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_body_total_strikes = str(0)
+                    try:
+                        fighter1_legs_total_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Legs Total Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Legs Total Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_legs_total_strikes = str(0)
+                    try:
+                        fighter1_head_significant_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Head Significant Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Head Significant Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_head_significant_strikes = str(0)
+                    try:
+                        fighter1_body_significant_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Body Significant Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Body Significant Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_body_significant_strikes = str(0)
+                    try:
+                        fighter1_legs_significant_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Legs Significant Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Legs Significant Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_legs_significant_strikes = str(0)
+                    try:
+                        fighter1_distance_head_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Head Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Head Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_distance_head_strikes = str(0)
+                    try:
+                        fighter1_distance_body_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Body Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Body Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_distance_body_strikes = str(0)
+                    try:
+                        fighter1_distance_leg_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Leg Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Leg Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_distance_leg_strikes = str(0)
+                    try:
+                        fighter1_clinch_head_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Head Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Head Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_clinch_head_strikes = str(0)
+                    try:
+                        fighter1_clinch_body_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Body Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Body Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_clinch_body_strikes = str(0)
+                    try:
+                        fighter1_clinch_leg_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Leg Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Leg Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_clinch_leg_strikes = str(0)
+                    try:
+                        fighter1_ground_head_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Head Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Head Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_ground_head_strikes = str(0)
+                    try:
+                        fighter1_ground_body_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Body Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Body Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_ground_body_strikes = str(0)
+                    try:
+                        fighter1_ground_leg_strikes = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Leg Strikes']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Leg Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_ground_leg_strikes = str(0)
+                    try:
+                        fighter1_distance_head_kicks = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Head Kicks']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Head Kicks']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_distance_head_kicks = str(0)
+                    try:
+                       fighter1_distance_body_kicks = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Body Kicks']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Head Kicks']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_distance_body_kicks = str(0)
+                    try:
+                        fighter1_distance_leg_kicks = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Leg Kicks']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Leg Kicks']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_distance_leg_kicks = str(0)
+                    try:
+                        fighter1_distance_head_punches = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Head Punhces']['Landed'] or 0)/int(ive_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Head Punches']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_distance_head_punches = str(0)
+                    try:
+                        fighter1_distance_body_punches = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Body Punhces']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Body Punches']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_distance_body_punches = str(0)
+                    try:
+                        fighter1_distance_body_punches = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Body Punhces']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Distance Body Punches']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_distance_body_punches = str(0)
+                    try:
+                        fighter1_clinch_significant_kicks = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Significant Kicks']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Significant Kicks']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_clinch_significant_kicks = str(0)
+                    try:
+                        fighter1_clinch_significant_punches = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Significant Punches']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Clinch Significant Punches']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_clinch_significant_punches = str(0)
+                    try:
+                        fighter1_ground_significant_kicks = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Significant Kicks']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Significant Kicks']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_ground_significant_kicks = str(0)
+                    try:
+                        fighter1_ground_significant_punches = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Significant Punches']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Strikes']['Ground Significant Punches']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_ground_significant_punches = str(0)
+                    try:
+                        fighter1_takedowns = str(int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Grappling']['Takedowns']['Landed'] or 0)/int(live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Grappling']['Takedowns']['Attempts'] or 1)*100)
+                    except:
+                        fighter1_takedowns = str(0)
                     fighter1_submissions = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Grappling']['Submissions']['Attempts']
                     fighter1_reversals_landed = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Grappling']['Reversals']['Landed']
                     fighter1_standups_landed = live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Red']['Grappling']['Standups']['Landed']
 
-                    fighter2_knock_down_landed = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Knock Down']['Landed']
-                    fighter2_significant_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Significant Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Significant Strikes'][
-                        'Attempts']
-                    fighter2_total_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Total Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Total Strikes']['Attempts']
-                    fighter2_punches = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Punches']['Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Punches']['Attempts']
-                    fighter2_kicks = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Kicks']['Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Kicks']['Attempts']
-                    fighter2_distance_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Strikes'][
-                        'Attempts']
-                    fighter2_clinch_significant_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
-                        'Clinch Significant Strikes']['Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
-                        'Clinch Significant Strikes']['Attempts']
-                    fighter2_ground_significant_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
-                        'Ground Significant Strikes']['Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
-                        'Ground Significant Strikes']['Attempts']
-                    fighter2_clinch_total_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Clinch Total Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Clinch Total Strikes'][
-                        'Attempts']
-                    fighter2_ground_total_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Total Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Total Strikes'][
-                        'Attempts']
-                    fighter2_head_total_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Head Total Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Head Total Strikes'][
-                        'Attempts']
-                    fighter2_body_total_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Body Total Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Body Total Strikes'][
-                        'Attempts']
-                    fighter2_legs_total_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Legs Total Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Legs Total Strikes'][
-                        'Attempts']
-                    fighter2_head_significant_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Head Significant Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Head Significant Strikes'][
-                        'Attempts']
-                    fighter2_body_significant_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Body Significant Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Body Significant Strikes'][
-                        'Attempts']
-                    fighter2_legs_significant_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Legs Significant Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Legs Significant Strikes'][
-                        'Attempts']
-                    fighter2_distance_head_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Head Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Head Strikes'][
-                        'Attempts']
-                    fighter2_distance_body_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Body Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Body Strikes'][
-                        'Attempts']
-                    fighter2_distance_leg_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Leg Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Leg Strikes'][
-                        'Attempts']
-                    fighter2_clinch_head_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Clinch Head Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Clinch Head Strikes'][
-                        'Attempts']
-                    fighter2_clinch_body_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Clinch Body Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Clinch Body Strikes'][
-                        'Attempts']
-                    fighter2_clinch_leg_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Clinch Leg Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Clinch Leg Strikes'][
-                        'Attempts']
-                    fighter2_ground_head_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Head Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Head Strikes'][
-                        'Attempts']
-                    fighter2_ground_body_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Body Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Body Strikes'][
-                        'Attempts']
-                    fighter2_ground_leg_strikes = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Leg Strikes'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Leg Strikes'][
-                        'Attempts']
-                    fighter2_distance_head_kicks = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Head Kicks'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Head Kicks'][
-                        'Attempts']
-                    fighter2_distance_body_kicks = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Body Kicks'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Head Kicks'][
-                        'Attempts']
-                    fighter2_distance_leg_kicks = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Leg Kicks'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Leg Kicks'][
-                        'Attempts']
                     try:
-                        fighter2_distance_head_punches = \
-                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
-                            'Distance Head Punhces']['Landed'] + ":" + \
-                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
-                            'Distance Head Punches']['Attempts']
+                        fighter2_knock_down_landed = \
+                            live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Knock Down']['Landed']
                     except:
-                        fighter2_distance_head_punches = '0:0'
+                        fighter2_knock_down_landed = str(0)
                     try:
-                        fighter2_distance_body_punches = \
-                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
-                            'Distance Body Punhces']['Landed'] + ":" + \
-                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
-                            'Distance Body Punches']['Attempts']
+                        fighter2_significant_strikes =str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Significant Strikes'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Significant Strikes'][
+                            'Attempts'] or 1)*100)
                     except:
-                        fighter2_distance_body_punches = '0:0'
+                        fighter2_significant_strikes = str(0)
                     try:
-                        fighter2_distance_body_punches = \
-                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
-                            'Distance Body Punhces']['Landed'] + ":" + \
-                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
-                            'Distance Body Punches']['Attempts']
+                        fighter2_total_strikes =str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Total Strikes'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Total Strikes']['Attempts'] or 1)*100)
                     except:
-                        fighter2_distance_body_punches = '0:0'
+                        fighter2_total_strikes = str(0)
                     try:
-                        fighter2_clinch_significant_kicks = \
-                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
-                            'Clinch Significant Kicks']['Landed'] + ":" + \
-                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
-                            'Clinch Significant Kicks']['Attempts']
+                        fighter2_punches =str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Punches']['Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Punches']['Attempts'] or 1)*100)
                     except:
-                        fighter2_clinch_significant_kicks = '0:0'
-                    fighter2_clinch_significant_punches = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
-                        'Clinch Significant Punches']['Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
-                        'Clinch Significant Punches']['Attempts']
-                    fighter2_ground_significant_kicks = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Significant Kicks'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Significant Kicks'][
-                        'Attempts']
-                    fighter2_ground_significant_punches = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
-                        'Ground Significant Punches']['Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
-                        'Ground Significant Punches']['Attempts']
-                    fighter2_takedowns = \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Grappling']['Takedowns'][
-                        'Landed'] + ":" + \
-                    live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Grappling']['Takedowns']['Attempts']
+                        fighter2_punches = str(0)
+                    try:
+                        fighter2_kicks =str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Kicks']['Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Kicks']['Attempts'] or 1)*100)
+                    except:
+                        fighter2_kicks = str(0)
+                    try:
+                        fighter2_distance_strikes =str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Strikes'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Strikes'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_distance_strikes = str(0)
+                    try:
+                        fighter2_clinch_significant_strikes = str(int(
+                            live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
+                                'Clinch Significant Strikes']['Landed'] or 0)/int(\
+                            live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
+                                'Clinch Significant Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter2_clinch_significant_strikes = str(0)
+
+                    try:
+                        fighter2_ground_significant_strikes = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
+                            'Ground Significant Strikes']['Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
+                            'Ground Significant Strikes']['Attempts'] or 1)*100)
+                    except:
+                        fighter2_ground_significant_strikes = str(0)
+                    try:
+                        fighter2_clinch_total_strikes = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Clinch Total Strikes'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Clinch Total Strikes'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_clinch_total_strikes = str(0)
+                    try:
+                        fighter2_ground_total_strikes = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Total Strikes'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Total Strikes'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_ground_total_strikes = str(0)
+                    try:
+                        fighter2_head_total_strikes = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Head Total Strikes'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Head Total Strikes'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_head_total_strikes = str(0)
+                    try:
+                        fighter2_body_total_strikes = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Body Total Strikes'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Body Total Strikes'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_body_total_strikes = str(0)
+                    try:
+                        fighter2_legs_total_strikes = str(int(
+                            live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Legs Total Strikes'][
+                                'Landed'] or 0)/int(\
+                            live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Legs Total Strikes'][
+                                'Attempts'] or 1)*100)
+                    except:
+                        fighter2_legs_total_strikes = str(0)
+                    try:
+                        fighter2_head_significant_strikes = str(int(
+                            live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Head Significant Strikes'][
+                                'Landed'] or 0)/int(\
+                            live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Head Significant Strikes'][
+                                'Attempts'] or 1)*100)
+                    except:
+                        fighter2_head_significant_strikes = str(0)
+                    try:
+                        fighter2_body_significant_strikes = str(int(
+                            live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Body Significant Strikes'][
+                                'Landed'] or 0)/int(\
+                            live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Body Significant Strikes'][
+                                'Attempts'] or 1)*100)
+                    except:
+                        fighter2_body_significant_strikes = str(0)
+                    try:
+                        fighter2_legs_significant_strikes = str(int(
+                            live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Legs Significant Strikes'][
+                                'Landed'] or 0)/int(\
+                            live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Legs Significant Strikes'][
+                                'Attempts'] or 1)*100)
+                    except:
+                        fighter2_legs_significant_strikes = str(0)
+                    try:
+                        fighter2_distance_head_strikes = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Head Strikes'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Head Strikes'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_distance_head_strikes = str(0)
+                    try:
+                        fighter2_distance_body_strikes = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Body Strikes'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Body Strikes'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_distance_body_strikes = str(0)
+                    try:
+                        fighter2_distance_leg_strikes = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Leg Strikes'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Leg Strikes'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_distance_leg_strikes = str(0)
+                    try:
+                        fighter2_clinch_head_strikes = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Clinch Head Strikes'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Clinch Head Strikes'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_clinch_head_strikes = str(0)
+                    try:
+                        fighter2_clinch_body_strikes = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Clinch Body Strikes'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Clinch Body Strikes'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_clinch_body_strikes = str(0)
+                    try:
+                        fighter2_clinch_leg_strikes = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Clinch Leg Strikes'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Clinch Leg Strikes'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_clinch_leg_strikes = str(0)
+                    try:
+                        fighter2_ground_head_strikes = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Head Strikes'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Head Strikes'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_ground_head_strikes = str(0)
+                    try:
+                        fighter2_ground_body_strikes = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Body Strikes'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Body Strikes'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_ground_body_strikes = str(0)
+                    try:
+                        fighter2_ground_leg_strikes = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Leg Strikes'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Leg Strikes'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_ground_leg_strikes = str(0)
+                    try:
+                        fighter2_distance_head_kicks = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Head Kicks'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Head Kicks'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_distance_head_kicks = str(0)
+                    try:
+                        fighter2_distance_body_kicks = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Body Kicks'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Head Kicks'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_distance_body_kicks = str(0)
+                    try:
+                        fighter2_distance_leg_kicks = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Leg Kicks'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Distance Leg Kicks'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_distance_leg_kicks = str(0)
+                    try:
+                        fighter2_distance_head_punches = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
+                            'Distance Head Punhces']['Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
+                            'Distance Head Punches']['Attempts'] or 1)*100)
+                    except:
+                        fighter2_distance_head_punches = str(0)
+                    try:
+                        fighter2_distance_body_punches = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
+                            'Distance Body Punhces']['Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
+                            'Distance Body Punches']['Attempts'] or 1)*100)
+                    except:
+                        fighter2_distance_body_punches = str(0)
+                    try:
+                        fighter2_distance_body_punches = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
+                            'Distance Body Punhces']['Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
+                            'Distance Body Punches']['Attempts'] or 1)*100)
+                    except:
+                        fighter2_distance_body_punches = str(0)
+                    try:
+                        fighter2_clinch_significant_kicks = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
+                            'Clinch Significant Kicks']['Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
+                            'Clinch Significant Kicks']['Attempts'] or 1)*100)
+                    except:
+                        fighter2_clinch_significant_kicks = str(0)
+                    try:
+                        fighter2_clinch_significant_punches = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
+                            'Clinch Significant Punches']['Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
+                            'Clinch Significant Punches']['Attempts'] or 1)*100)
+                    except:
+                        fighter2_clinch_significant_punches = str(0)
+                    try:
+                        fighter2_ground_significant_kicks = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Significant Kicks'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes']['Ground Significant Kicks'][
+                            'Attempts'] or 1)*100)
+                    except:
+                        fighter2_ground_significant_kicks = str(0)
+                    try:
+                        fighter2_ground_significant_punches = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
+                            'Ground Significant Punches']['Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Strikes'][
+                            'Ground Significant Punches']['Attempts'] or 1)*100)
+                    except:
+                        fighter2_ground_significant_punches = str(0)
+                    try:
+                        fighter2_takedowns = str(int(
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Grappling']['Takedowns'][
+                            'Landed'] or 0)/int(\
+                        live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Grappling']['Takedowns']['Attempts'] or 1)*100)
+                    except:
+                        fighter2_takedowns = str(0)
                     fighter2_submissions = \
                     live_data['FMLiveFeed']['RoundStats']['Round%s' % i]['Blue']['Grappling']['Submissions']['Attempts']
                     fighter2_reversals_landed = \
@@ -713,8 +903,8 @@ def load_live_fight_data():
 
 
 if __name__ == '__main__':
-    load_fighters()
-    load_events()
-    load_fights()
-    # load_live_fight_data()
+    # load_fighters()
+    # load_events()
+    # load_fights()
+    load_live_fight_data()
     print()
